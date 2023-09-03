@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>misc on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/misc/</link>
+    <description>Recent content in misc on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 19 Feb 2022 13:54:42 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/misc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My 2021 in Tech</title>
+      <link>https://ajmalsiddiqui.me/blog/my-2021-in-tech/</link>
+      <pubDate>Sat, 19 Feb 2022 13:54:42 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/my-2021-in-tech/</guid>
+      <description>&lt;p&gt;It is that time of the year again. Or, to be precise, it is 51 days after that time of &lt;em&gt;last&lt;/em&gt; year. I&amp;rsquo;ve been remiss in my schedule for these posts. But it is the time when I reflect upon my growth in tech over the past year. Like &lt;a href=&#34;https://ajmalsiddiqui.me/blog/my-2020-in-tech/&#34; title=&#34;My 2020 in Tech&#34;&gt;last years post&lt;/a&gt;, this one goes over what I learned, some of the opinions I formed, what I could have done better, and what I think I should focus on in 2022.&lt;/p&gt;
+&lt;p&gt;While I do this primarily to track my progress, I do hope that those who read about my growth find it instructive, and walk away having gained something from it. With that happy thought, let&amp;rsquo;s get started.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Your First Programming Language</title>
+      <link>https://ajmalsiddiqui.me/blog/your-first-programming-language/</link>
+      <pubDate>Sun, 07 Nov 2021 17:58:57 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/your-first-programming-language/</guid>
+      <description>&lt;p&gt;What programming language should you learn first? Back in University, juniors who wanted to get on the programming roller coaster often asked me this. After much deliberation, I think I have my answer. In this post I express why I think a lot of conventional wisdom here isn&amp;rsquo;t the best, and what I suggest as the first language for getting started with coding.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Diving Into Unfamiliar Codebases</title>
+      <link>https://ajmalsiddiqui.me/blog/diving-into-unfamiliar-codebases/</link>
+      <pubDate>Sun, 13 Jun 2021 12:20:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/diving-into-unfamiliar-codebases/</guid>
+      <description>&lt;p&gt;Whether you&amp;rsquo;re starting out in a new job or team, or if you&amp;rsquo;re trying to contribute to a Open Source project that you&amp;rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&amp;rsquo;t start all projects from scratch. This isn&amp;rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&amp;rsquo;ve picked up to get up to speed with a new codebase in this post.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>My 2020 in Tech</title>
+      <link>https://ajmalsiddiqui.me/blog/my-2020-in-tech/</link>
+      <pubDate>Fri, 01 Jan 2021 14:23:46 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/my-2020-in-tech/</guid>
+      <description>&lt;p&gt;2020 has easily been the most profound year for me as a tech enthusiast. I graduated with a CS degree, got an amazing job, picked up 2 new languages (Go and Clojure), revisited 2 other langauges that I &lt;em&gt;thought&lt;/em&gt; I knew but clearly didn&amp;rsquo;t (C and Rust), and explored many new domains (most notably cybersecurity and cloud engineering). This post is a loosely organized collection of my thoughts and experiences related to each of these items, as well as some insight into how I achieved some of the things I achieved this year.&lt;/p&gt;
+&lt;p&gt;So if you&amp;rsquo;re going to be kind enough to indulge me, let&amp;rsquo;s start talking!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

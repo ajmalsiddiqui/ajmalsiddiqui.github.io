@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>workflows on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/categories/workflows/</link>
+    <description>Recent content in workflows on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 16 Sep 2021 20:01:59 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/categories/workflows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Extending The Python Debugger</title>
+      <link>https://ajmalsiddiqui.me/blog/extending-the-python-debugger/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/extending-the-python-debugger/</guid>
+      <description>&lt;p&gt;For a little while now I&amp;rsquo;ve had this itch with pdb that I&amp;rsquo;ve been wanting to scratch. I wanted a limited version of &lt;a href=&#34;https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html&#34; title=&#34;gdb User Defined Hooks&#34;&gt;the hooks feature from gdb&lt;/a&gt; so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dive Into Dotfiles Part 2</title>
+      <link>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-2/</link>
+      <pubDate>Tue, 05 Jun 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-2/</guid>
+      <description>&lt;p&gt;Following up on the first article which introduces dotfiles, this one dives into the common challenges to managing dotfiles effectively. We look at approaches to organizing them, techniques to keep them in sync, bootstrapping fresh systems, committing them to version control, etc.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dive Into Dotfiles Part 1</title>
+      <link>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-1/</link>
+      <pubDate>Sun, 27 May 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-1/</guid>
+      <description>&lt;p&gt;This article looks at the very basic elements of customizing your dotfiles and stepping up your workflows. We look at defining custom aliases and functions, and the rationale behind checking your dotfiles into version control. The article concludes with a few references to good dotfile repositories and a taste of things to come.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Introduction to NPM Scripts</title>
+      <link>https://ajmalsiddiqui.me/blog/introduction-to-npm-scripts/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/introduction-to-npm-scripts/</guid>
+      <description>&lt;p&gt;NPM scripts allow you to build powerful, composable workflows without depending on external automation tools or build systems. Read on to find out how to leverage them in your projects!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

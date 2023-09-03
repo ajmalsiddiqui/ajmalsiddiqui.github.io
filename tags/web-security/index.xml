@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>web security on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/web-security/</link>
+    <description>Recent content in web security on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 14 Nov 2020 14:06:35 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/web-security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Squarectf 2020: Deep Web Blog</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/</guid>
+      <description>&lt;p&gt;This is the writeup for the &amp;ldquo;Deep Web Blog&amp;rdquo; web challenge from &lt;a href=&#34;https://squarectf.com/&#34; title=&#34;SquareCTF 2020&#34;&gt;SquareCTF 2020&lt;/a&gt;, which was worth 200 points and involved a Blind NoSQL Injection attack.&lt;/p&gt;
+&lt;p&gt;Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Time to find what their plans are.
+&lt;a href=&#34;http://challenges.2020.squarectf.com:9541&#34;&gt;http://challenges.2020.squarectf.com:9541&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

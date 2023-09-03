@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lisp on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/lisp/</link>
+    <description>Recent content in lisp on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 07 Nov 2021 17:58:57 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/lisp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Your First Programming Language</title>
+      <link>https://ajmalsiddiqui.me/blog/your-first-programming-language/</link>
+      <pubDate>Sun, 07 Nov 2021 17:58:57 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/your-first-programming-language/</guid>
+      <description>&lt;p&gt;What programming language should you learn first? Back in University, juniors who wanted to get on the programming roller coaster often asked me this. After much deliberation, I think I have my answer. In this post I express why I think a lot of conventional wisdom here isn&amp;rsquo;t the best, and what I suggest as the first language for getting started with coding.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

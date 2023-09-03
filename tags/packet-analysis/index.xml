@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>packet analysis on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/packet-analysis/</link>
+    <description>Recent content in packet analysis on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 25 Oct 2020 21:04:16 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/packet-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MetaCTF CyberGames 2020: Open Thermal Exhaust Port</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/</link>
+      <pubDate>Sun, 25 Oct 2020 21:04:16 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/</guid>
+      <description>&lt;p&gt;This is the write-up for the &amp;ldquo;Open Thermal Exhaust Port&amp;rdquo; forensics challenge from &lt;a href=&#34;https://metactf.com/cybergames&#34; title=&#34;MetaCTF CyberGames 2020&#34;&gt;MetaCTF CyberGames 2020&lt;/a&gt;, which was worth 275 points.&lt;/p&gt;
+&lt;p&gt;Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&amp;rsquo;m sure that won&amp;rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

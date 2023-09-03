@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/</link>
+    <description>Recent content on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 17 Jul 2022 13:00:05 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google CTF 2022: Treebox</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/google-ctf-2022-treebox/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/google-ctf-2022-treebox/</guid>
+      <description>&lt;p&gt;This is the write-up for Treebox, one of the easier Sandbox Escape challenges from Google CTF 2022.&lt;/p&gt;
+&lt;p&gt;The challenge statement says, &amp;ldquo;I think I finally got Python sandboxing right.&amp;rdquo;, and we&amp;rsquo;re provided with a hostname/port pair and (conveniently) &lt;a href=&#34;https://github.com/google/google-ctf/blob/master/2022/sandbox-treebox/challenge/treebox.py&#34; title=&#34;The Treebox Source Code&#34;&gt;the source code of the sandbox&lt;/a&gt;. The flag is in a file called &lt;code&gt;flag&lt;/code&gt; in the current working directory of the sandbox process.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>My 2021 in Tech</title>
+      <link>https://ajmalsiddiqui.me/blog/my-2021-in-tech/</link>
+      <pubDate>Sat, 19 Feb 2022 13:54:42 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/my-2021-in-tech/</guid>
+      <description>&lt;p&gt;It is that time of the year again. Or, to be precise, it is 51 days after that time of &lt;em&gt;last&lt;/em&gt; year. I&amp;rsquo;ve been remiss in my schedule for these posts. But it is the time when I reflect upon my growth in tech over the past year. Like &lt;a href=&#34;https://ajmalsiddiqui.me/blog/my-2020-in-tech/&#34; title=&#34;My 2020 in Tech&#34;&gt;last years post&lt;/a&gt;, this one goes over what I learned, some of the opinions I formed, what I could have done better, and what I think I should focus on in 2022.&lt;/p&gt;
+&lt;p&gt;While I do this primarily to track my progress, I do hope that those who read about my growth find it instructive, and walk away having gained something from it. With that happy thought, let&amp;rsquo;s get started.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Your First Programming Language</title>
+      <link>https://ajmalsiddiqui.me/blog/your-first-programming-language/</link>
+      <pubDate>Sun, 07 Nov 2021 17:58:57 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/your-first-programming-language/</guid>
+      <description>&lt;p&gt;What programming language should you learn first? Back in University, juniors who wanted to get on the programming roller coaster often asked me this. After much deliberation, I think I have my answer. In this post I express why I think a lot of conventional wisdom here isn&amp;rsquo;t the best, and what I suggest as the first language for getting started with coding.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Extending The Python Debugger</title>
+      <link>https://ajmalsiddiqui.me/blog/extending-the-python-debugger/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/extending-the-python-debugger/</guid>
+      <description>&lt;p&gt;For a little while now I&amp;rsquo;ve had this itch with pdb that I&amp;rsquo;ve been wanting to scratch. I wanted a limited version of &lt;a href=&#34;https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html&#34; title=&#34;gdb User Defined Hooks&#34;&gt;the hooks feature from gdb&lt;/a&gt; so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Diving Into Unfamiliar Codebases</title>
+      <link>https://ajmalsiddiqui.me/blog/diving-into-unfamiliar-codebases/</link>
+      <pubDate>Sun, 13 Jun 2021 12:20:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/diving-into-unfamiliar-codebases/</guid>
+      <description>&lt;p&gt;Whether you&amp;rsquo;re starting out in a new job or team, or if you&amp;rsquo;re trying to contribute to a Open Source project that you&amp;rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&amp;rsquo;t start all projects from scratch. This isn&amp;rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&amp;rsquo;ve picked up to get up to speed with a new codebase in this post.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>My 2020 in Tech</title>
+      <link>https://ajmalsiddiqui.me/blog/my-2020-in-tech/</link>
+      <pubDate>Fri, 01 Jan 2021 14:23:46 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/my-2020-in-tech/</guid>
+      <description>&lt;p&gt;2020 has easily been the most profound year for me as a tech enthusiast. I graduated with a CS degree, got an amazing job, picked up 2 new languages (Go and Clojure), revisited 2 other langauges that I &lt;em&gt;thought&lt;/em&gt; I knew but clearly didn&amp;rsquo;t (C and Rust), and explored many new domains (most notably cybersecurity and cloud engineering). This post is a loosely organized collection of my thoughts and experiences related to each of these items, as well as some insight into how I achieved some of the things I achieved this year.&lt;/p&gt;
+&lt;p&gt;So if you&amp;rsquo;re going to be kind enough to indulge me, let&amp;rsquo;s start talking!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Squarectf 2020: Deep Web Blog</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/</guid>
+      <description>&lt;p&gt;This is the writeup for the &amp;ldquo;Deep Web Blog&amp;rdquo; web challenge from &lt;a href=&#34;https://squarectf.com/&#34; title=&#34;SquareCTF 2020&#34;&gt;SquareCTF 2020&lt;/a&gt;, which was worth 200 points and involved a Blind NoSQL Injection attack.&lt;/p&gt;
+&lt;p&gt;Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Time to find what their plans are.
+&lt;a href=&#34;http://challenges.2020.squarectf.com:9541&#34;&gt;http://challenges.2020.squarectf.com:9541&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MetaCTF Cybergames 2020: Password Here Please</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/</link>
+      <pubDate>Tue, 27 Oct 2020 10:38:30 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/</guid>
+      <description>&lt;p&gt;This is a write-up for the &amp;ldquo;Password Here Please&amp;rdquo; reverse engineering challenge from &lt;a href=&#34;https://metactf.com/cybergames&#34; title=&#34;MetaCTF CyberGames 2020&#34;&gt;MetaCTF CyberGames 2020&lt;/a&gt;, which was worth 325 points.&lt;/p&gt;
+&lt;p&gt;Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&amp;rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&amp;hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MetaCTF CyberGames 2020: Open Thermal Exhaust Port</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/</link>
+      <pubDate>Sun, 25 Oct 2020 21:04:16 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/</guid>
+      <description>&lt;p&gt;This is the write-up for the &amp;ldquo;Open Thermal Exhaust Port&amp;rdquo; forensics challenge from &lt;a href=&#34;https://metactf.com/cybergames&#34; title=&#34;MetaCTF CyberGames 2020&#34;&gt;MetaCTF CyberGames 2020&lt;/a&gt;, which was worth 275 points.&lt;/p&gt;
+&lt;p&gt;Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&amp;rsquo;m sure that won&amp;rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dive Into Dotfiles Part 2</title>
+      <link>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-2/</link>
+      <pubDate>Tue, 05 Jun 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-2/</guid>
+      <description>&lt;p&gt;Following up on the first article which introduces dotfiles, this one dives into the common challenges to managing dotfiles effectively. We look at approaches to organizing them, techniques to keep them in sync, bootstrapping fresh systems, committing them to version control, etc.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dive Into Dotfiles Part 1</title>
+      <link>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-1/</link>
+      <pubDate>Sun, 27 May 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/dive-into-dotfiles-part-1/</guid>
+      <description>&lt;p&gt;This article looks at the very basic elements of customizing your dotfiles and stepping up your workflows. We look at defining custom aliases and functions, and the rationale behind checking your dotfiles into version control. The article concludes with a few references to good dotfile repositories and a taste of things to come.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Syntactical Quirks Of JavaScript Explained</title>
+      <link>https://ajmalsiddiqui.me/blog/syntactical-quirks-in-javascript-explained/</link>
+      <pubDate>Wed, 07 Feb 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/syntactical-quirks-in-javascript-explained/</guid>
+      <description>&lt;p&gt;Tag along for a quick tour of some of the weirder things about JavaScript syntax that, once you pick them up, will (hopefully) become indispensible parts of your JS codebases. We&amp;rsquo;ll look at the spread operator, IIFEs, and implicit returns in arrow functions.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Introduction to NPM Scripts</title>
+      <link>https://ajmalsiddiqui.me/blog/introduction-to-npm-scripts/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/introduction-to-npm-scripts/</guid>
+      <description>&lt;p&gt;NPM scripts allow you to build powerful, composable workflows without depending on external automation tools or build systems. Read on to find out how to leverage them in your projects!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Getting Started With Backend Development</title>
+      <link>https://ajmalsiddiqui.me/blog/getting-started-with-backend-development/</link>
+      <pubDate>Mon, 15 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/getting-started-with-backend-development/</guid>
+      <description>&lt;p&gt;A code-free introduction to what backend (i.e. server side) development is all about, what backend devs do, how to get started, some prerequisite knowledge and a few guideposts to help you get your hands dirty!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>The Toolkit of a Full Stack Javascript Developer</title>
+      <link>https://ajmalsiddiqui.me/blog/the-toolkit-of-a-full-stack-javascript-developer/</link>
+      <pubDate>Mon, 15 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/the-toolkit-of-a-full-stack-javascript-developer/</guid>
+      <description>&lt;p&gt;The JavaScript ecosystem of tools and technologies for building applications is neither small nor limited to the web. This article touches upon &lt;em&gt;some&lt;/em&gt; of the options you have for technologies used to build web apps, cross platform applications, desktop apps, and more, while also talking about certain tools that aren&amp;rsquo;t a strict requirement for a full stack developer, but one that most devs probably can&amp;rsquo;t get very far without. Hop on!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://ajmalsiddiqui.me/blog/my-programmin-journey/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/my-programmin-journey/</guid>
+      <description>My Programming Journey I technically started &amp;ldquo;programming&amp;rdquo; when I was 11 or 12, and my first language was technically QBASIC. I say &amp;ldquo;technically&amp;rdquo; because the programs I wrote were often toy programs (I fondly remember being particularly proud of a program that printed the colours of the rainbow in order - and it didn&amp;rsquo;t even use a for loop. Just 7 print statements), and since I didn&amp;rsquo;t have access to a computer then, I wrote them in my notebook.</description>
+    </item>
+    
+  </channel>
+</rss>

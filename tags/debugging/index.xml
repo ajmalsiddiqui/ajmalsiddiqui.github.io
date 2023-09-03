@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>debugging on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/debugging/</link>
+    <description>Recent content in debugging on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 16 Sep 2021 20:01:59 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/debugging/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Extending The Python Debugger</title>
+      <link>https://ajmalsiddiqui.me/blog/extending-the-python-debugger/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/extending-the-python-debugger/</guid>
+      <description>&lt;p&gt;For a little while now I&amp;rsquo;ve had this itch with pdb that I&amp;rsquo;ve been wanting to scratch. I wanted a limited version of &lt;a href=&#34;https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html&#34; title=&#34;gdb User Defined Hooks&#34;&gt;the hooks feature from gdb&lt;/a&gt; so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

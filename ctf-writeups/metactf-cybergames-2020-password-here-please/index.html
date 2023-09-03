@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>MetaCTF Cybergames 2020: Password Here Please | Ajmal&#39;s Website</title>
+
+    
+    
+    <meta name="author" content="Mohammed Ajmal Siddiqui" />
+    <meta name="description" content="This is a write-up for the &amp;ldquo;Password Here Please&amp;rdquo; reverse engineering challenge from MetaCTF CyberGames 2020, which was worth 325 points.
+Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&amp;rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&amp;hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.
+" />
+    
+
+    
+    <link rel="canonical" href="https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/" />
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/main.min.fb057fde3b9dd318b0c2197316dfe995dc3eca7f9a0617107e262ab28363c57f.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-153877586-2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script></head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">Ajmal&#39;s Website</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/blog/">Blog</a>
+  
+    <a class="color-link nav-link" href="/ctf-writeups/">CTF Write-Ups</a>
+  
+    <a class="color-link nav-link" href="/book-reviews/">Book Reviews</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+    <a class="color-link nav-link" href="/categories/">Categories</a>
+  
+  <a class="color-link nav-link" href="https://ajmalsiddiqui.me/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="mailto:ajmalsiddiqui21@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/_ajmalsiddiqui" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://linkedin.com/in/ajmal-siddiqui" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+    <a class="social-icon" href="https://medium.com/@ajmalsiddiqui21" target="_blank" rel="noopener" title="Medium">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,2 L26,2 L26,26 L2,26 L2,2 Z M7.72727142,10.0265545 L7.72727142,17.1527156 C7.77112416,17.4097828 7.69008764,17.6723786 7.50898513,17.8600642 L5.81538462,19.9143852 L5.81538462,20.1852847 L10.617683,20.1852847 L10.617683,19.9143852 L8.92408245,17.8600642 C8.74165168,17.6726892 8.65559727,17.4118239 8.69074193,17.1527156 L8.69074193,10.9897526 L12.9059255,20.1852847 L13.3951878,20.1852847 L17.0157294,10.9897526 L17.0157294,18.3190884 C17.0157294,18.514738 17.0157294,18.5523628 16.8877685,18.6802876 L15.5855778,19.9444852 L15.5855778,20.2153846 L21.9083531,20.2153846 L21.9083531,19.9444852 L20.6513252,18.7103876 C20.5403599,18.6258033 20.4853154,18.4867833 20.50831,18.3491883 L20.50831,9.28158097 C20.4853154,9.14398599 20.5403599,9.00496587 20.6513252,8.92038167 L21.9384615,7.68628409 L21.9384615,7.41538462 L17.4824105,7.41538462 L14.3059685,15.3391941 L10.6929541,7.41538462 L6.01861668,7.41538462 L6.01861668,7.68628409 L7.52403936,9.49980554 C7.67182769,9.63301305 7.74730311,9.82863473 7.72727142,10.0265545 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/ajmalsiddiqui" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+    <p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+    <p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js" integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin="anonymous"></script>
+</footer>
+
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">MetaCTF Cybergames 2020: Password Here Please</h1>
+    
+    <time>October 27, 2020</time>
+    
+    <div>
+        <p>
+        <p>This is a write-up for the &ldquo;Password Here Please&rdquo; reverse engineering challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 325 points.</p>
+<p>Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.</p>
+<p>We are given a small python program that validates the password. Here it is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ValidatePassword</span>(password):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Password Validator v1.0&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Attempting to validate password...&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(len(password[::<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>]) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">or</span> len(password[<span style="color:#ae81ff">17</span>:]) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">7</span>):
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Woah, you&#39;re not even close!!&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    pwlen <span style="color:#f92672">=</span> len(password)
+</span></span><span style="display:flex;"><span>    chunk1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;key&#39;</span><span style="color:#f92672">.</span>join([chr(<span style="color:#ae81ff">0x98</span> <span style="color:#f92672">-</span> ord(password[c]))
+</span></span><span style="display:flex;"><span>                             <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>))])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join([c <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> chunk1[::<span style="color:#ae81ff">4</span>]]) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;&amp;e&#34;3&amp;Ew*&#39;</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;You call that the password? HA!&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    chunk2 <span style="color:#f92672">=</span> [ord(c) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1F</span> <span style="color:#66d9ef">if</span> ord(c) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x60</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#66d9ef">else</span> (ord(c) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1F</span> <span style="color:#66d9ef">if</span> ord(c) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x40</span> <span style="color:#66d9ef">else</span> ord(c))
+</span></span><span style="display:flex;"><span>                  <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password[int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>) : int(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>)]]
+</span></span><span style="display:flex;"><span>    ring <span style="color:#f92672">=</span> [<span style="color:#ae81ff">54</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">45</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">25</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">42</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">25</span>, <span style="color:#ae81ff">31</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">79</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(chunk2)):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span> len(chunk2) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">else</span> chunk2[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]) <span style="color:#f92672">!=</span> chunk2[i] <span style="color:#f92672">+</span> ring[i]:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;You cracked the passwo-- just kidding, try again! &#34;</span> <span style="color:#f92672">+</span> str(i))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    chunk3 <span style="color:#f92672">=</span> password[int(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>):]
+</span></span><span style="display:flex;"><span>    code <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xaace63feba9e1c71ef460e6dbf1b1fbabfd7e2e35401440ac57e93bd9ba41c4fbd5d437b1dfab11fe7a1c6c2035982a71765fc9a7b32ccef695dffb71babe15733f5bb29f76aae5f80fff</span>
+</span></span><span style="display:flex;"><span>    valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(chunk3)):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(ord(chunk3[i]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x28</span>):
+</span></span><span style="display:flex;"><span>            valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        code <span style="color:#f92672">-=</span> (<span style="color:#ae81ff">257</span> <span style="color:#f92672">**</span> (ord(chunk3[i]) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x28</span>)) <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> code <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> valid:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Password accepted!&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;Quite wrong indeed!&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Please enter password&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> ValidatePassword(input()):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><p>Right, lets reverse this!</p>
+<h2 id="a-high-level-overview">A High Level Overview</h2>
+<p>Since we have the luxury of having the source code at our disposal (and in a language as readable as Python!), let&rsquo;s get an overview of what&rsquo;s going on here. The easiest way to do so is to just run the validator. I&rsquo;ve saved the program in a file called <code>validator.py</code>. Start with running</p>
+<pre tabindex="0"><code>python validator.py
+</code></pre><p>Note that you&rsquo;ll have to enter the password surrounded with quotes or python tries to evaluate the password as a symbol and crashes.</p>
+<p>The program prompts us to enter the password. Let&rsquo;s try something simple, like <code>&quot;helloworld&quot;</code>. It responds with a rather condescending <code>Woah, you're not even close!!</code>, following which we get another shot at entering the password.</p>
+<p>Okay, not very nice. Let&rsquo;s take a cursory glance at the code and get an idea of what wer&rsquo;re dealing with.</p>
+<p>There&rsquo;s a <code>ValidatePassword</code> function which seems to do all the heavy lifting here, and it returns <code>True</code> if the password was accepted, and <code>False</code> otherwise (and boy, it returns <code>False</code> a lot!). This function is run in a <code>while</code> loop that runs until a valid password is provided (or until you stop the program with <code>Ctrl+c</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Please enter password&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> ValidatePassword(input()):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><p>Now let&rsquo;s start breaking down the <code>ValidatePassword</code> function. At a glance, you can tell that it applies various validations one after another, and if a validation fails, it returns <code>False</code>. We see references to <code>chunk1</code>, <code>chunk2</code> and <code>chunk3</code>, each of which are validated independently. And towards the start, there seems to be something that validates the length of some convoluted subsection of the password. That&rsquo;s 4 parts in total!</p>
+<p>Let&rsquo;s work through these in order!</p>
+<blockquote>
+<p>Note: Each stage of the reversing process is under it&rsquo;s own heading. So if you&rsquo;ve already figured something out, feel free to skip ahead. This is a long read!</p>
+</blockquote>
+<h2 id="stage-1-the-length-of-the-password">Stage 1: The Length of the Password</h2>
+<p>Our validation function kicks of with this bit:</p>
+<pre tabindex="0"><code>if(len(password[::-2]) != 12 or len(password[17:]) != 7):
+    print(&#34;Woah, you&#39;re not even close!!&#34;)
+    return False
+</code></pre><p>It checks for two conditions, and if either one is satisfied, the password is invalid, and we get the <code>Woah, you're not even close!!</code> response we saw earlier. The second one looks easier, so we&rsquo;ll start with that. The <code>password[17:]</code> part is python syntax for &ldquo;get me all the elements in this iterable starting from index 17&rdquo;. The condition is true if the length of the part of the password starting from the 17th character is not 7. Since we want this to be false, we realise that our password has a length of 17 + 7, which is 24!</p>
+<p>The first part of the condition also checks for the same thing, but in a much more convoluted way. The <code>password[::-2]</code> is python speak for &ldquo;Give me all the characters in this list, from start to finish, but start at the end and take 2 steps at a time&rdquo;. Let&rsquo;s break that down for the sake of clarity. Fire up a python interpreter using <code>python</code> and enter these commands:</p>
+<pre tabindex="0"><code># Define the password
+password = &#34;mysupersecretpass&#34;
+
+# password[:] just gets all the characters in the password, which returns the password itself
+password[:] # mysupersecretpass
+
+# password[::-1] gets all the characters in the password, but starts from the end
+password[::-1] # ssaptercesrepusym
+
+# password[::-2] gets all the characters starting from the end, but skips every alternate character
+password[::-2] # satrerpsm
+</code></pre><p>The condition is that <code>len(password[::-2])</code> should not be 12. Since we want it to be false, we realise that the length of the string returned by taking every alternate character of the password should be 12, which means that the length of the password should be <code>12 * 2 = 24</code>. Perfect!</p>
+<p>Run <code>validator.py</code> again, but this time enter a string of length 24. I just entered <code>&quot;aaaaaaaaaaaaaaaaaaaaaaaa&quot;</code>.</p>
+<p>This time the validation script says <code>You call that the password? HA!</code>. Sweet, we&rsquo;ve gotten past the first stage!</p>
+<h2 id="stage-2-deobfuscation-and-inversion">Stage 2: Deobfuscation and Inversion</h2>
+<p>Okay, here&rsquo;s the code for the second stage:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pwlen <span style="color:#f92672">=</span> len(password)
+</span></span><span style="display:flex;"><span>chunk1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;key&#39;</span><span style="color:#f92672">.</span>join([chr(<span style="color:#ae81ff">0x98</span> <span style="color:#f92672">-</span> ord(password[c]))
+</span></span><span style="display:flex;"><span>                         <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>))])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join([c <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> chunk1[::<span style="color:#ae81ff">4</span>]]) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;&amp;e&#34;3&amp;Ew*&#39;</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;You call that the password? HA!&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>At this point, we&rsquo;ll have to do some computations. Most people would write a script to solve this, but I preferred an interactive method where I could try my ideas in an interpreter. So that&rsquo;s what we&rsquo;ll be doing here. Fire up a python interpreter using <code>python</code> and let&rsquo;s get started!</p>
+<p>It looks like this stage uses a subsection of the password to create the first chunk, <code>chunk1</code>. We see that it operates on the characters of the password from index 0 to <code>pwlen / 3</code>, where <code>pwlen</code> is the length of the password. Since we already know that the password is 24 characters long, <code>pwlen / 3 = 8</code>. The first chunk operates on the first 8 characters, so that&rsquo;s what we have to figure out.</p>
+<p>Let&rsquo;s look at what <code>chunk1</code> looks like. In your interpreter, enter the code for finding <code>chunk1</code> verbatim:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abcdefghijklmnopqrstuvwx&#34;</span>
+</span></span><span style="display:flex;"><span>pwlen <span style="color:#f92672">=</span> len(password) <span style="color:#75715e"># 24</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># returns &#39;7key6key5key4key3key2key1key0&#39;</span>
+</span></span><span style="display:flex;"><span>chunk1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;key&#39;</span><span style="color:#f92672">.</span>join([chr(<span style="color:#ae81ff">0x98</span> <span style="color:#f92672">-</span> ord(password[c])) <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>))])
+</span></span></code></pre></div><p>Looking up the <code>chr</code> and <code>ord</code> functions tells us that <code>ord</code> converts a single character into it&rsquo;s integer ordinal, and <code>chr</code> does the opposite - convert an integer ordinal into a single character.</p>
+<blockquote>
+<p>Tip: You could google the <code>chr</code> and <code>ord</code> functions, but a real hacker would use the <code>help</code> function of the interpreter! Try typing <code>help(chr)</code> or <code>help(ord)</code> in the interpreter.</p>
+<p>Okay, I lied. A <em>real</em> hacker would use <code>chr.__doc__</code> and <code>ord.__doc__</code>. ;)</p>
+</blockquote>
+<p>So it looks like this is constructed by:</p>
+<ol>
+<li>Converting each character of the password into an integer using <code>ord</code></li>
+<li>Subtracting each of these integers from <code>0x98</code></li>
+<li>Converting the resultant back into a character using <code>chr</code></li>
+<li>Constructing a string by putting the word &ldquo;key&rdquo; between each character returned</li>
+</ol>
+<p>Whew! Okay, let&rsquo;s touch this when we need to. Let&rsquo;s look at the next part, which has our condition.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join([c <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> chunk1[::<span style="color:#ae81ff">4</span>]]) <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;&amp;e&#34;3&amp;Ew*&#39;</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;You call that the password? HA!&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>Here, we use another string constructed from <code>chunk1</code> by taking every 4th character of <code>chunk1</code>, starting from the first one. This is what <code>chunk1[::4]</code> does. Type this into the interpreter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join([c <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> chunk1[::<span style="color:#ae81ff">4</span>]]) <span style="color:#75715e"># &#39;76543210&#39;</span>
+</span></span></code></pre></div><p>It looks like&hellip; this removes the <code>key</code> between each character? That makes the whole adding &ldquo;key&rdquo; part from earlier pointless! Why would you ever do that?</p>
+<p>Obfuscation. They&rsquo;re trying to make our job harder and send us down rabbit holes. But it&rsquo;ll take more than that to confuse us!</p>
+<p>Let&rsquo;s simplify this stage a little.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pwlen <span style="color:#f92672">=</span> len(password)
+</span></span><span style="display:flex;"><span>chunk1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([chr(<span style="color:#ae81ff">0x98</span> <span style="color:#f92672">-</span> ord(password[c]))
+</span></span><span style="display:flex;"><span>                         <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>))])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> chunk1 <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;&amp;e&#34;3&amp;Ew*&#39;</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;You call that the password? HA!&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>Okay, that is so much easier to understand! All we need to do is find an 8 character string that, when transformed into <code>chunk1</code>, results in <code>&amp;e&quot;3&amp;Ew*</code>.</p>
+<p>In order to pull this off, let&rsquo;s try and convert the <code>chunk1</code> that we expect back into the string. In other words, let&rsquo;s write a function that can <em>invert</em> the transformation that is applied to obtain <code>chunk1</code>. It&rsquo;s time for some reversing!</p>
+<p>So how do we figure this out? For starters, let&rsquo;s say that the integer returned by <code>ord(password[c])</code> is <code>x</code>. Then the transformation becomes <code>chr(0x98 - x)</code>. Let&rsquo;s forget the <code>chr</code> for a second. The crux of the transform is the <code>0x98 - x</code>. Let&rsquo;s say that this results in an integer <code>y</code>. We then have the equation <code>0x98 - x = y</code>. Now here&rsquo;s the question: Given <code>y</code>, how do you find <code>x</code>? Yep, we can rewrite that as <code>x = 0x98 - y</code> and solve for <code>x</code>.</p>
+<p>In order to convert that back to a character, we apply the <code>chr</code> function, thus resulting in <code>chr(0x98 - y)</code>. Remeber that <code>y</code> is the integer ordinal of a character from <code>chunk1</code>, so we need to convert a character <code>c</code> from <code>chunk1</code> into it&rsquo;s ordinal before we use our little reverse-function. So, for a character <code>c</code> of <code>chunk1</code>, we can figure out the corresponing character of the password using <code>chr(0x98 - ord(c))</code>. This looks&hellip; familiar? This is exactly what we&rsquo;re doing to calculate <code>chunk1</code> in the first place! This is a function whose inverse is&hellip; itself!</p>
+<p>That makes our job easy. We don&rsquo;t even need to write any code to figure out the first 8 characters. Since we know that chunk1 should be <code>&amp;e&quot;3&amp;Ew*</code>, and that the function that calculates <code>chunk1</code> is its own inverse, we can just give <code>&amp;e&quot;3&amp;Ew*</code> as an input to the function itself and figure out the first 8 chars of the password!</p>
+<p>Let&rsquo;s modify the <code>validator.py</code> file to print <code>chunk1</code>. Add this line right after <code>chunk1</code> is calculated:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(chunk1)
+</span></span></code></pre></div><p>Let&rsquo;s run <code>validator.py</code> again, but this time we&rsquo;ll set the first 8 characters of the password to <code>&amp;e&quot;3&amp;Ew*</code>, and the remaining 16 to something random like &ldquo;aaaaaaaaaaaaaaaa&rdquo;. <strong>Make sure that you&rsquo;ve simplified the code as per the instructions above, and replaced the <code>&quot;key&quot;.join</code> with <code>&quot;&quot;.join</code>.</strong>  Here&rsquo;s the input you need:</p>
+<pre tabindex="0"><code>&#39;&amp;e&#34;3&amp;Ew*aaaaaaaaaaaaaaaa&#39;
+</code></pre><p>And that prints <code>r3verS!n</code>! So the the first 8 characters of the password must be <code>r3verS!n</code>. Let&rsquo;s try this input next to confirm:</p>
+<pre tabindex="0"><code>&#39;r3verS!naaaaaaaaaaaaaaaa&#39;
+</code></pre><p>And this time it tells us that <code>You cracked the passwo-- just kidding, try again! 0</code>! Looks like we&rsquo;ve gotten past this stage and figured out the first 8 characters correctly!</p>
+<h2 id="stage-3-reverse-and-inverse">Stage 3: Reverse and Inverse</h2>
+<p>We move on to the next snippet, which deals with <code>chunk2</code>. Judging by the range in the list comprehension which creates <code>chunk2</code>, it looks like it operates upon the next 8 characters of our 24 character password.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>chunk2 <span style="color:#f92672">=</span> [ord(c) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1F</span> <span style="color:#66d9ef">if</span> ord(c) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x60</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">else</span> (ord(c) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1F</span> <span style="color:#66d9ef">if</span> ord(c) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x40</span> <span style="color:#66d9ef">else</span> ord(c))
+</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password[int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>) : int(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>)]]
+</span></span><span style="display:flex;"><span>ring <span style="color:#f92672">=</span> [<span style="color:#ae81ff">54</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">45</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">25</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">42</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">25</span>, <span style="color:#ae81ff">31</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">79</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(chunk2)):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span> len(chunk2) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">else</span> chunk2[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]) <span style="color:#f92672">!=</span> chunk2[i] <span style="color:#f92672">+</span> ring[i]:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;You cracked the passwo-- just kidding, try again! &#34;</span> <span style="color:#f92672">+</span> str(i))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>We see that the list comprehension being used to construct <code>chunk2</code> returns the result of some arithmetic operations on the ordinal value of each character (which is obtained using the <code>ord</code> function). So <code>chunk2</code> is a list of 8 integers.</p>
+<p>And then there seems to be a list of seemingly random numbers called <code>ring</code> which is used to validate <code>chunk2</code>.</p>
+<p>Finally, we have a for loop that iterates over the elements of <code>chunk2</code> and applies a condition to each of them in order to validate them. In essence, we will need the second group of 8 characters of the password to generate an array of integers <code>chunk2</code> that passes this validation. It makes sense that we want to know <code>chunk2</code> first (and also, this is a <em>reversing</em> challenge, hehehe), so let&rsquo;s go in reverse and figure out the integer array <code>chunk2</code>.</p>
+<p>Here is the condition (where <code>i</code> is the index):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>(<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span> len(chunk2) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">else</span> chunk2[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]) <span style="color:#f92672">!=</span> chunk2[i] <span style="color:#f92672">+</span> ring[i]
+</span></span></code></pre></div><p>This might seem complex at first glance (especially because of the ternary operator), but it really isn&rsquo;t. It just says that for all values of <code>i</code> except the last (i.e. except when <code>i</code> equals <code>len(chunk2) - 1</code>), <code>chunk2[i] + ring[i]</code> must equal <code>chunk2[i+1]</code> (i.e. the value at the next index of <code>chunk2</code>. For the last value of <code>i</code>, <code>chunk2[i] + ring[i]</code> must equal 0.</p>
+<p>Since we know the exact value of <code>chunk2[i] + ring[i]</code> for the last element (<code>i=7</code>), we can start with that and work our way backwards. Lot&rsquo;s of reversing here!</p>
+<p>Fire up your python interpreter and let&rsquo;s play with this. The comments will explain what&rsquo;s happening.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># let&#39;s first grab the ring from the source code</span>
+</span></span><span style="display:flex;"><span>ring <span style="color:#f92672">=</span> [<span style="color:#ae81ff">54</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">45</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">25</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">42</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">25</span>, <span style="color:#ae81ff">31</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">79</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># let&#39;s create a list of 8 integers to represent chunk2</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># we initialize the elements of chunk2 to 0</span>
+</span></span><span style="display:flex;"><span>chunk2 <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>)] <span style="color:#75715e"># [0, 0, 0, 0, 0, 0, 0, 0]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># we know that chunk2[7] + ring[7] = 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># therefore...</span>
+</span></span><span style="display:flex;"><span>chunk2[<span style="color:#ae81ff">7</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">-</span> ring[<span style="color:#ae81ff">7</span>] <span style="color:#75715e"># [0, 0, 0, 0, 0, 0, 0, 79]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># we work our way backwards to calculate the rest of the elements of chunk2</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># using the knowledge that since chunk2[i+1] = chunk2[i] + ring[i]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># chunk2[i] = chunk2[i+1] - ring[i]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> reversed(range(<span style="color:#ae81ff">7</span>)):
+</span></span><span style="display:flex;"><span>  chunk2[i] <span style="color:#f92672">=</span> chunk2[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> ring[i]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print chunk2 (note that if you are in the interpreter, you can just enter the variable name instead of using the print function)</span>
+</span></span><span style="display:flex;"><span>chunk2 <span style="color:#75715e"># [72, 126, 81, 90, 115, 73, 48, 79]</span>
+</span></span></code></pre></div><p>You can confirm that this is the right value of <code>chunk2</code> by placing this line of code right before the for loop that validates it and checking if you are able to get past this stage.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>chunk2 <span style="color:#f92672">=</span> [<span style="color:#ae81ff">72</span>, <span style="color:#ae81ff">126</span>, <span style="color:#ae81ff">81</span>, <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">115</span>, <span style="color:#ae81ff">73</span>, <span style="color:#ae81ff">48</span>, <span style="color:#ae81ff">79</span>]
+</span></span></code></pre></div><p>Okay, now that we know our target value of <code>chunk2</code>, it is time to figure out the characters that generate it. Time to reverse the part that generates <code>chunk2</code>!</p>
+<p>This source code seems to make rather generous use of the ternary operator which (possibly intentionally) hurts readability. To make matters worse, we have a list comprehension! So let&rsquo;s refactor the whole thing into a vanilla for loop which uses a function to get the right value for each char. Here&rsquo;s what that might look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">chunk2_char</span>(c):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ord(c) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x60</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ord(c) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1F</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ord(c) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x40</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> ord(c) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1F</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> ord(c)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>chunk2 <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> password[int(pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>) : int(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>)]:
+</span></span><span style="display:flex;"><span>    chunk2<span style="color:#f92672">.</span>append(chunk2_char(c))
+</span></span></code></pre></div><p>In this form, the code becomes far easier to analyse. Refactoring code to improve readability and mitigate obfuscation is more important than you might expect during reverse engineering.</p>
+<p>Now lets try to invert the <code>chunk2_char</code> function.</p>
+<p>Let&rsquo;s start with the return values. The easiest one is the <code>return ord(c)</code> in the very end. This just converts the character to the integer ordinal, so to invert that, we can use the <code>chr</code> function.</p>
+<p>For the condition where <code>ord(c) &gt; 0x60</code>, the function returns <code>ord(c) - 0x1F</code>. To invert this, let&rsquo;s say that <code>x = ord(c)</code>. We then solve the equation <code>x - 0x1F = y</code> for <code>x</code>, which gives us <code>x = y + 0x1F</code>. Since <code>x = ord(c)</code>, we can get <code>x</code> by using the inverse of the <code>ord</code> function, which, as you are well aware by now, is the <code>chr</code> function. Thus, the inversion of <code>ord(c) - 0x1F</code> becomes <code>chr(x)</code> which boils down to <code>chr(x + 0x1F)</code>.</p>
+<p>By a similar chain of reasoning, you&rsquo;ll find that the inverse of <code>ord(c) + 0x1F</code> is <code>chr(x + 0x1F)</code>.</p>
+<p>Now let&rsquo;s look at the conditions. In the original function, the first condition is <code>ord(c) &gt; 0x60</code>. Let&rsquo;s think of this as follows: let&rsquo;s say that our inverse function takes an integer ordinal <code>x</code> and returns a character <code>c</code>. When we apply the <em>original</em> function to <code>c</code>, we should get <code>x</code> back. So when we check whether <code>ord(c) &gt; 0x60</code> is true in the <em>original</em> function, the <code>c</code> here is the value <em>returned</em> by our inverse function. Which means that for each of the conditions, we can replace the <code>ord(c)</code> with the integer ordinal of the value returned if that condition is true.</p>
+<p>For example, if the first condition (<code>ord(c) &gt; 0x60</code>) is true, the returned value is <code>chr(x + 0x1F)</code>. Replacing the <code>c</code> with this value, we get the condition <code>ord(chr(x + 0x1F)) &gt; 0x60</code>. But we can simplify this knowing that the <code>ord</code> function is the inverse of the <code>chr</code> function. So <code>ord(chr(x)) = x</code>. Applying this, we get the inverse condition <code>x + 0x1F &gt; 0x60</code>. We can rearrange terms and make this <code>x &gt; 0x60 - 0x1F</code> which simplifies to <code>x &gt; 65</code> (you can do all these calculations in your interpreter).</p>
+<p>By using similar reasoning, we figure out that the inverse of the second condition is <code>if x - 0x1F &gt; 0x40</code>, which simplifies to <code>x &gt; 95</code>.</p>
+<p>Armed with the inverses of each of the pieces, we can construct our inverse function as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inverse_chunk2_char</span>(x):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">65</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chr(x <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1F</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">95</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> chr(x <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1F</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> chr(x)
+</span></span></code></pre></div><p>And apply it to the <code>chunk2</code> value we calculated earlier like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>result <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(list(map(inverse_chunk2_char, chunk2)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># if you don&#39;t understand the map syntax very well, this list comprehension also works</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([inverse_chunk2_char(x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> chunk2])
+</span></span></code></pre></div><p>But if you actually look at the value of <code>result</code>, you&rsquo;ll see that though it looks like we got <em>some</em> things right, some of the values are non-printable. Looks like there is an issue with our inverse function.</p>
+<p>The issue lies in the order in which we check our conditions. Think about what would happen for the value <code>x = 126</code> (the second item in the <code>chunk2</code> array). The first condition checks out because obviously <code>126 &gt; 65</code>. But so does the second condition (<code>126 &gt; 95</code>). In fact, if you think about it, you&rsquo;ll realise that <em>the first condition is true whenever the second condition is because 95 &gt; 65</em>. So we don&rsquo;t ever reach the second condition when the first one is true. Even when you need to. To fix this, we just reorder things a little (note that all conditions are independent, so we don&rsquo;t need the nested if here anyways).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inverse_chunk2_char</span>(x):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">95</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chr(x <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1F</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">elif</span> x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">65</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chr(x <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1F</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chr(x)
+</span></span></code></pre></div><p>We now retrieve the 8 characters we need using</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>result <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(list(map(inverse_chunk2_char, chunk2)))
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># &#39;g_pyTh0n&#39;</span>
+</span></span></code></pre></div><p>That looks legit. So the first 16 characters of our password seem to be <code>r3verS!ng_pyTh0n</code>. Reversing python huh?</p>
+<p>Entering <code>'r3verS!ng_pyTh0naaaaaaaa'</code> in the password prompt results in <code>Quite wrong indeed!</code>. Nice, we&rsquo;ve gotten past this stage!</p>
+<h2 id="stage-4-doin-the-math">Stage 4: Doin&rsquo; the Math</h2>
+<p>We&rsquo;re finally at the last stage. Let&rsquo;s look at what we have:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>chunk3 <span style="color:#f92672">=</span> password[int(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> pwlen <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>):]
+</span></span><span style="display:flex;"><span>code <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xaace63feba9e1c71ef460e6dbf1b1fbabfd7e2e35401440ac57e93bd9ba41c4fbd5d437b1dfab11fe7a1c6c2035982a71765fc9a7b32ccef695dffb71babe15733f5bb29f76aae5f80fff</span>
+</span></span><span style="display:flex;"><span>valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(chunk3)):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(ord(chunk3[i]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x28</span>):
+</span></span><span style="display:flex;"><span>        valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>    code <span style="color:#f92672">-=</span> (<span style="color:#ae81ff">257</span> <span style="color:#f92672">**</span> (ord(chunk3[i]) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x28</span>)) <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> code <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> valid:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Password accepted!&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Quite wrong indeed!&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>This stage follows the same pattern of taking an 8 character long chunk and applying some validations on it. If these pass, you will (presumably) get the coveted <code>Password accepted!</code>.</p>
+<p>We start with a really, <em>really</em> long hexadecimal number called <code>code</code>. And the condition to make it work is quite straightforward: <code>code</code> must equal 0 and <code>valid</code> must be <code>True</code>.</p>
+<p>All the processing happens in this for loop:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(chunk3)):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(ord(chunk3[i]) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x28</span>):
+</span></span><span style="display:flex;"><span>        valid <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>    code <span style="color:#f92672">-=</span> (<span style="color:#ae81ff">257</span> <span style="color:#f92672">**</span> (ord(chunk3[i]) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x28</span>)) <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> i)
+</span></span></code></pre></div><p>For starters, we are looking at the <code>ord</code> values of the characters. So we&rsquo;re dealing with numbers here.</p>
+<p>The first thing is a condition that checks if <code>ord(c) &lt; 0x28</code> (where <code>c</code> is a character of chunk3), and if so, sets <code>valid</code> to <code>False</code>. We don&rsquo;t want that, so we obviously don&rsquo;t want to trigger this condition. It is thus obvious that all the characters of this chunk will have integer ordinals greater than 0x28. Easy enough.</p>
+<p>The next line does some strange maths. In each iteration, it subtracts from the current value of <code>code</code> the result of this strange calculation: <code>(257 ** (ord(chunk3[i]) - 0x28)) * (1 &lt;&lt; i)</code>. In the end, the value of <code>code</code> must be 0. Since we are dealing with 8 iterations (corresponding to the last 8 characters of the password), we are doing this subtraction 8 times. In other words, we are subtracting 8 values from <code>code</code>, and this must result in a <code>0</code>. Let&rsquo;s say that these values are <code>x0</code> to <code>x7</code>. We can then express the intent of the for loop and condition as this equation:</p>
+<pre tabindex="0"><code>code - x0 - x1 - x2 - x3 - x4 - x5  -x6 -x7 = 0
+=&gt; code = x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7
+=&gt; x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 = code
+</code></pre><p>Where <code>x0...x7</code> are the various values of the convoluted expression <code>(257 ** (ord(chunk3[i]) - 0x28)) * (1 &lt;&lt; i)</code>.</p>
+<p>It&rsquo;s time to break this expression down!</p>
+<p>To make things easier, let&rsquo;s say that <code>ord(chunk3[i]) - 0x28 = yi</code>. This is easy to invert and lets us focus on the right things. The expression then becomes <code>(257 ** yi) * (1 &lt;&lt; i)</code>. That&rsquo;s much better.</p>
+<p>The <code>(1 &lt;&lt; i)</code> represents a bitwise left shift. If you don&rsquo;t know how these work, I suggest doing a google search at this point. All you need to know for this part is that a bitwise left shift by <code>i</code> places is equivalent to multiplying the given number by <code>2^i</code>. Since we are shifting <code>1</code> in all the cases, the <code>(1 &lt;&lt; i)</code> turns into <code>1 * 2^i</code> which is simply <code>2^i</code>. Finally, just to use more comfortable mathematical notation, let&rsquo;s replace the python exponentiation operator <code>**</code> with the more familiar <code>^</code>. We now get something that looks a lot more manageable:</p>
+<pre tabindex="0"><code>(257 ^ yi) * (2 ^ i)
+</code></pre><p>Our problem now reduces to finding 8 values (<code>y0 to y7</code>) such that plugging each of them into the above expression and summing them up results in <code>code</code>. That&rsquo;s troublesome. We have 8 unknowns and only one equation. And it isn&rsquo;t even a polynomial one!</p>
+<p>I was stuck at this point for a bit, but that&rsquo;s when the hint from the challenge came to my rescue! To recap, &ldquo;Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.&rdquo;</p>
+<p>Yes! We can convert this to base 257! To understand why, let&rsquo;s take a quick look at what it means to be a number in a certain base <code>b</code>. Let&rsquo;s say we have the octal number 176. Let&rsquo;s convert this into the more familiar base 10 (decimal). To do this, we run the following calculation (your interpreter is a good place to play with this):</p>
+<pre tabindex="0"><code>6 * (8 ** 0) + 7 * (8 ** 1) + 1 * (8 ** 2)
+# 126
+</code></pre><p>There is a pattern here. Starting from the <em>end</em>, we take each digit and multiply it by the base raised to the power of the position of the digit (starting with 0, which is the position of the <em>last</em> digit).</p>
+<p>So if we convert <code>code</code> into base 257, we will have a resultant that looks something like:</p>
+<pre tabindex="0"><code>a * (257 ** 0) + b * (257 ** 1) + .... + x * (257 ** k)
+</code></pre><p>Where <code>k</code> is one less than the number of digits in base 257 that code has. This matches with the pattern we saw in the previous expression! Let&rsquo;s try this and see where it takes us.</p>
+<p>I found <a href="https://towardsdatascience.com/how-to-write-a-number-systems-calculator-in-python-b172557cb705" title="Number systems calculator in Python">this base conversion python script</a> online which was well written and up to the task, and the article accompanying it is quite good too.</p>
+<p>Copy the code from the article into a python file and name it <code>bconvert.py</code>. Since we need to get a list of what would be the digits in base 257, we&rsquo;ll take a quick look at the code and print this list out. It turns out that this is quite simple. Most of the work happens in the <code>convert_number_system</code> function. Right after the main <code>while</code> loop (the <code>while sum_base_10 &gt; 0</code> condition) completes, add this line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(remainder_list)
+</span></span></code></pre></div><p>Run the converter using <code>python bconvert.py</code>. Note that this one requires python3. When asked for the base to convert from, enter 16 (since <code>code</code> is in hexadecimal). For the base to convert to, enter 257. Finally, for the number to convert, enter the value of <code>code</code>.</p>
+<p>The script should print a list containing our digits (ignore the final output; you don&rsquo;t have 257 digits to represent base 257) that looks like this (note that you&rsquo;ll see an array of strings, but I&rsquo;ve converted it into numbers):</p>
+<pre tabindex="0"><code>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 8]
+</code></pre><p>This is interesting! It looks like most of our &ldquo;digits&rdquo; are zero! We also seem to have <em>seven</em> non-zero digits: 32, 4, 64, 17, 2, 128, and 8. You&rsquo;ll have to take a quick look at the base conversion script to realise that it conveniently prints out the digits <em>from the end</em>. So the digit at index 0 of this list is the last digit, and so on. Recall that we can convert this into the familiar decimal system by multiplying each of these digits with <code>257 ^ index</code>.</p>
+<p>Let&rsquo;s quickly find the indices of the interesting non-zero digits. Here&rsquo;s a Python one liner. We&rsquo;ll also make a new list with the non-zero digits:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>digits <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">128</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>non_zero_digits <span style="color:#f92672">=</span> filter(<span style="color:#66d9ef">lambda</span> x: x, digits)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [32, 4, 64, 17, 2, 128, 8]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>indices <span style="color:#f92672">=</span> [digits<span style="color:#f92672">.</span>index(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> non_zero_digits]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [30, 39, 45, 55, 62, 70, 74]</span>
+</span></span></code></pre></div><p>Since most of our numbers are zero, <code>0 * (257 ^ index)</code> will just be 0, so we can ignore them. We can now express <code>code</code> mathematically as:</p>
+<pre tabindex="0"><code>code = (257 ^ 30) * 32 + (257 ^ 39) * 4 + (257 ^ 45) * 64...
+</code></pre><p>We immediately see that all the digits except 17 are powers of two, and they are being multiplied by something that is in the form <code>257 ^ yi</code>! This looks <em>exactly</em> like our equation from earlier:</p>
+<pre tabindex="0"><code>(257 ^ yi) * (2 ^ i)
+</code></pre><p>Except we have two problems:</p>
+<ol>
+<li>There are 8 terms in our equation (for 8 characters of the password), but we only have 7 non-zero digits.</li>
+<li>The 17 is problematic because it isn&rsquo;t a power of 2.</li>
+</ol>
+<p>The solution to both of these issues is the same. It is the subtle realization that <code>17 = 16 + 1</code>!</p>
+<p>So we can rewrite the term of the equation involving the digit 17 as <code>(257 ^ 55) * 17 = (257 ^ 55) * 16 + (257 ^ 55) * 1</code>. We now have exactly 8 terms, all of which are in the form <code>(257 ^ yi) * (2 ^ i)</code>. Perfect!</p>
+<p>We can now write each of the 8 digits we have in the form <code>(257 ^ yi) * (2 ^ i)</code>, so let&rsquo;s do that. I&rsquo;ve ordered this based on increasing values of i:</p>
+<pre tabindex="0"><code>(257 ^ 55) * (2 ^ 0) # 1 = 2 ^ 0, the index corresponding to 1 is the one for 17, which is 55
+(257 ^ 62) * (2 ^ 1) # 2 = 2 ^ 1
+(257 ^ 39) * (2 ^ 2) # 4 = 2 ^ 2
+...
+(257 ^ 70) * (2 ^ 7) # 128 = 2 ^ 7
+</code></pre><p>With this ordering, we can construct a list of <code>yi</code> values, which are just the powers that <code>257</code> is raised to.</p>
+<p>Now recall that we had set <code>yi = ord(chunk3[i]) - 0x28</code> earlier. To get <code>chunk3[i]</code> values, we need to invert this function. This is easy if you&rsquo;ve gotten past the previous stage. We realise that <code>chunk3[i] = chr(yi + 0x28)</code>. Knowing this, we can construct <code>chunk3</code> as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Our list of yi values</span>
+</span></span><span style="display:flex;"><span>yis <span style="color:#f92672">=</span> [<span style="color:#ae81ff">55</span>, <span style="color:#ae81ff">62</span>, <span style="color:#ae81ff">39</span>, <span style="color:#ae81ff">74</span>, <span style="color:#ae81ff">55</span>, <span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">45</span>, <span style="color:#ae81ff">70</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>chunk3 <span style="color:#f92672">=</span> [chr(yi <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x28</span>) <span style="color:#66d9ef">for</span> yi <span style="color:#f92672">in</span> yis]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># [&#39;_&#39;, &#39;f&#39;, &#39;O&#39;, &#39;r&#39;, &#39;_&#39;, &#39;F&#39;, &#39;U&#39;, &#39;n&#39;]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># We convert the character list into a string </span>
+</span></span><span style="display:flex;"><span>password_chunk <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(chunk3)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># &#39;_fOr_FUn&#39;</span>
+</span></span></code></pre></div><p>And we have the last 8 characters! You can enter this in the password prompt to finally feel the euphoria of <code>Password accepted!</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;r3verS!ng_pyTh0n_fOr_FUn&#39;</span>
+</span></span></code></pre></div><p>The flag is <code>MetaCTF{r3verS!ng_pyTh0n_fOr_FUn}</code>!</p>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/security">#security</a>
+        
+            <a class="tag" href="/tags/reverse-engineering">#reverse engineering</a>
+        
+            <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="mailto:ajmalsiddiqui21@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/_ajmalsiddiqui" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://linkedin.com/in/ajmal-siddiqui" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+    <a class="social-icon" href="https://medium.com/@ajmalsiddiqui21" target="_blank" rel="noopener" title="Medium">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,2 L26,2 L26,26 L2,26 L2,2 Z M7.72727142,10.0265545 L7.72727142,17.1527156 C7.77112416,17.4097828 7.69008764,17.6723786 7.50898513,17.8600642 L5.81538462,19.9143852 L5.81538462,20.1852847 L10.617683,20.1852847 L10.617683,19.9143852 L8.92408245,17.8600642 C8.74165168,17.6726892 8.65559727,17.4118239 8.69074193,17.1527156 L8.69074193,10.9897526 L12.9059255,20.1852847 L13.3951878,20.1852847 L17.0157294,10.9897526 L17.0157294,18.3190884 C17.0157294,18.514738 17.0157294,18.5523628 16.8877685,18.6802876 L15.5855778,19.9444852 L15.5855778,20.2153846 L21.9083531,20.2153846 L21.9083531,19.9444852 L20.6513252,18.7103876 C20.5403599,18.6258033 20.4853154,18.4867833 20.50831,18.3491883 L20.50831,9.28158097 C20.4853154,9.14398599 20.5403599,9.00496587 20.6513252,8.92038167 L21.9384615,7.68628409 L21.9384615,7.41538462 L17.4824105,7.41538462 L14.3059685,15.3391941 L10.6929541,7.41538462 L6.01861668,7.41538462 L6.01861668,7.68628409 L7.52403936,9.49980554 C7.67182769,9.63301305 7.74730311,9.82863473 7.72727142,10.0265545 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/ajmalsiddiqui" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+        <p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+        <p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js" integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin="anonymous"></script>
+</footer>
+
+    </body>
+</html>

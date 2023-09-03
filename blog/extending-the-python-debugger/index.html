@@ -2,22 +2,22 @@
 
 <html lang="en">
     <head>
-	<meta name="generator" content="Hugo 0.98.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Ajmal&#39;s Website</title>
+    <title>Extending The Python Debugger | Ajmal&#39;s Website</title>
 
     
     
     <meta name="author" content="Mohammed Ajmal Siddiqui" />
-    <meta name="description" content="Coder, car/bike lover, polyglot." />
+    <meta name="description" content="For a little while now I&amp;rsquo;ve had this itch with pdb that I&amp;rsquo;ve been wanting to scratch. I wanted a limited version of the hooks feature from gdb so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).
+" />
     
 
     
-    <link rel="canonical" href="https://ajmalsiddiqui.me/" />
+    <link rel="canonical" href="https://ajmalsiddiqui.me/blog/extending-the-python-debugger/" />
 
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -39,8 +39,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="Ajmal's Website" />
     
 <script type="application/javascript">
 var doNotTrack = false;
@@ -183,312 +181,85 @@ if (!doNotTrack) {
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Coder, car/bike lover, polyglot.</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/google-ctf-2022-treebox/">
-                    Google CTF 2022: Treebox
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the write-up for Treebox, one of the easier Sandbox Escape challenges from Google CTF 2022.</p>
-<p>The challenge statement says, &ldquo;I think I finally got Python sandboxing right.&rdquo;, and we&rsquo;re provided with a hostname/port pair and (conveniently) <a href="https://github.com/google/google-ctf/blob/master/2022/sandbox-treebox/challenge/treebox.py" title="The Treebox Source Code">the source code of the sandbox</a>. The flag is in a file called <code>flag</code> in the current working directory of the sandbox process.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>July 17, 2022</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/sandbox-escape">#sandbox escape</a>
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/google-ctf-2022">#google ctf 2022</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/my-2021-in-tech/">
-                    My 2021 in Tech
-                </a>
-            </h2>
-            <div>
-                <p><p>It is that time of the year again. Or, to be precise, it is 51 days after that time of <em>last</em> year. I&rsquo;ve been remiss in my schedule for these posts. But it is the time when I reflect upon my growth in tech over the past year. Like <a href="/blog/my-2020-in-tech/" title="My 2020 in Tech">last years post</a>, this one goes over what I learned, some of the opinions I formed, what I could have done better, and what I think I should focus on in 2022.</p>
-<p>While I do this primarily to track my progress, I do hope that those who read about my growth find it instructive, and walk away having gained something from it. With that happy thought, let&rsquo;s get started.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>February 19, 2022</time>
+<h1 class="post-title">Extending The Python Debugger</h1>
+    
+    <time>September 16, 2021</time>
+    
+    <div>
+        <p>
+        <p>For a little while now I&rsquo;ve had this itch with pdb that I&rsquo;ve been wanting to scratch. I wanted a limited version of <a href="https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html" title="gdb User Defined Hooks">the hooks feature from gdb</a> so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).</p>
+<blockquote>
+<p>Since this post is about the python debugger, I&rsquo;m naturally assuming that you have a degree of familiarity with Python and at least basic competence in using pdb. If you aren&rsquo;t familiar with pdb (but understand the point of debuggers in general), <a href="https://docs.python.org/3/library/pdb.html" title="Python 3 Pdb Docs">the official pdb docs</a> are quite good and deserve a reading. Or <a href="https://realpython.com/python-debugging-pdb/" title="RealPython Pdb Tutorial">there&rsquo;s a really good tutorial by RealPython</a> on the subject.</p>
+</blockquote>
+<h2 id="the-problem">The Problem</h2>
+<p>The <a href="https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html" title="gdb User Defined Hooks">gdb user defined hooks feature</a> is quite powerful. It let&rsquo;s you define a &ldquo;hook&rdquo; that executes before (or after, if you so wish) either after a command or when execution stops and you drop into the debugger. Check out the docs linked for more detail on that. If you&rsquo;ve spent any time in a debugger, you&rsquo;ll know that you inevitably have times when you need to repeat the same sequence of commands again and again, and the hooks feature lets you automate this quite well. I wanted something much smaller - the ability to automatically execute debugger commands every time code execution stops.</p>
+<h2 id="the-stuff-that-didnt-quite-work-but-is-cool-to-know">The Stuff That Didn&rsquo;t Quite Work (But Is Cool To Know)</h2>
+<h3 id="commands">commands</h3>
+<p>The closest feature that I could find for my use case was the <code>commands</code> command. It allows you to execute a series of commands when a breakpoint of a particular breakpoint number is hit. Certainly useful (consult <a href="https://docs.python.org/3/library/pdb.html" title="Python 3 Pdb Docs">the official docs</a> for some usage ideas), but clearly falls short of our requirements because a) it wouldn&rsquo;t work with breakpoints defined in the code using a <code>breakpoint()</code> or <code>pdb.set_trace()</code> call because it only works with breakpoint numbers and b) even if it did, it wouldn&rsquo;t execute our commands every time execution stops. It only executes commands when a breakpoint is hit, not when you step over a single line of code using <code>n(ext)</code> for example.</p>
+<h3 id="alias">alias</h3>
+<p>Another technique that one can use to make the debugging process more bearable is the <code>alias</code> feature. It is kinda similar to the <code>alias</code> command of bash and other shells. This lets you define an alias for <strong>anything that be legally typed on the pdb prompt</strong>. This includes using other aliases you have defined. Here&rsquo;s an example (taken straight from <a href="https://docs.python.org/3/library/pdb.html" title="Python 3 Pdb Docs">the official pdb docs</a>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Print instance variables (usage &#34;pi classInst&#34;)</span>
+</span></span><span style="display:flex;"><span>alias pi <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">1.</span>__dict__<span style="color:#f92672">.</span>keys(): print(<span style="color:#e6db74">&#34;%1.&#34;</span>,k,<span style="color:#e6db74">&#34;=&#34;</span>,<span style="color:#f92672">%</span><span style="color:#ae81ff">1.</span>__dict__[k])
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Print instance variables in self</span>
+</span></span><span style="display:flex;"><span>alias ps pi self
+</span></span></code></pre></div><p>Once again, quite useful. The biggest issue with this is that unlike a bash alias, <em>you cannot put multiple commands in an alias</em> since you can only legally execute one command/expression in the pdb prompt. Pretty serious limitation for our use case. And the other problem is that this isn&rsquo;t automated - you need to type and execute the alias manually in the pdb prompt.</p>
+<h3 id="pdbrc">pdbrc</h3>
+<p>Not many people know that pdb supports a <code>.pdbrc</code> file, which is quite similar to a <code>.bashrc</code>. This file lets you execute any debugger commands you want at the startup of the debugger. It can either be present in the home directory or in the directory from where you fire up the python process (the one in the home directory is executed first if you have <code>.pdbrc</code> files in both places).</p>
+<p>This is great for initializing useful aliases, and if you find yourself executing the same cumbersome sequence of commands at startup again and again, you might find it worthwhile to put this sequence in a <code>.pdbrc</code> file in your current working directory. But clearly this doesn&rsquo;t help us much, since these commands are only executed at startup.</p>
+<h3 id="display">display</h3>
+<p>The <code>display</code> debugger command takes an expression as an argument and displays the value of the exception if it changed each time execution stops in the current frame. I mention this because before learning about this command, I could only think of an implementation of <a href="https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html" title="gdb User Defined Hooks">the gdb hooks feature</a> to kinda pull this off, and it is a very common use case.</p>
+<h2 id="building-your-own-pdb">Building Your Own Pdb</h2>
+<blockquote>
+<p>Disclaimer: while the information here is useful, the code example is a hacky little thing I pulled off in a couple of hours. It likely breaks other pdb things and has weird edge cases. If you find problems, let me know. I might update/improve this if I see the need to, but no promises!</p>
+</blockquote>
+<p>So we see that pdb has a featureset that doesn&rsquo;t cover this use case. Depending on how you use it, you may have your own use cases that pdb isn&rsquo;t adequate for. One way forward is to build your own pdb. No, not from scratch. It turns out that the pdb module of the standard library exports a <code>pdb.Pdb</code> class, which you can subclass. And then you can override various methods of the original <code>Pdb</code> class in your subclass in order to customize them to your liking.</p>
+<p>As for which methods of the <code>Pdb</code> do what and which ones you should override, that is something I haven&rsquo;t found much documentation for. The easiest thing for me was to read <a href="https://github.com/python/cpython/blob/main/Lib/pdb.py" title="Pdb Source Code">the pdb source code</a> and find the parts that I needed to tinker with. I am far from an experienced Pythonista, but I found the code to not be too difficult to grok at. As an example (and to present a solution to the original problem posited above), here is my crude Pdb variant that has support for a <code>hook</code> command. It is far from perfect, but the less than 50 lines of fairly straightforward code should be a testament to how easy it is to get your own pdb variant up and running.</p>
+<script type="application/javascript" src="https://gist.github.com/ajmalsiddiqui/a9f50594c1d3d858a9685aa74e61f2da.js"></script>
 
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/your-first-programming-language/">
-                    Your First Programming Language
-                </a>
-            </h2>
-            <div>
-                <p><p>What programming language should you learn first? Back in University, juniors who wanted to get on the programming roller coaster often asked me this. After much deliberation, I think I have my answer. In this post I express why I think a lot of conventional wisdom here isn&rsquo;t the best, and what I suggest as the first language for getting started with coding.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 7, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-                    <a class="tag" href="/tags/lisp">#lisp</a>
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/extending-the-python-debugger/">
-                    Extending The Python Debugger
-                </a>
-            </h2>
-            <div>
-                <p><p>For a little while now I&rsquo;ve had this itch with pdb that I&rsquo;ve been wanting to scratch. I wanted a limited version of <a href="https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html" title="gdb User Defined Hooks">the hooks feature from gdb</a> so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 16, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/pdb">#pdb</a>
-                
-                    <a class="tag" href="/tags/debugging">#debugging</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/diving-into-unfamiliar-codebases/">
-                    Diving Into Unfamiliar Codebases
-                </a>
-            </h2>
-            <div>
-                <p><p>Whether you&rsquo;re starting out in a new job or team, or if you&rsquo;re trying to contribute to a Open Source project that you&rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&rsquo;t start all projects from scratch. This isn&rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&rsquo;ve picked up to get up to speed with a new codebase in this post.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>June 13, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/my-2020-in-tech/">
-                    My 2020 in Tech
-                </a>
-            </h2>
-            <div>
-                <p><p>2020 has easily been the most profound year for me as a tech enthusiast. I graduated with a CS degree, got an amazing job, picked up 2 new languages (Go and Clojure), revisited 2 other langauges that I <em>thought</em> I knew but clearly didn&rsquo;t (C and Rust), and explored many new domains (most notably cybersecurity and cloud engineering). This post is a loosely organized collection of my thoughts and experiences related to each of these items, as well as some insight into how I achieved some of the things I achieved this year.</p>
-<p>So if you&rsquo;re going to be kind enough to indulge me, let&rsquo;s start talking!</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>January 1, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/squarectf-2020-deep-web-blog/">
-                    Squarectf 2020: Deep Web Blog
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the writeup for the &ldquo;Deep Web Blog&rdquo; web challenge from <a href="https://squarectf.com/" title="SquareCTF 2020">SquareCTF 2020</a>, which was worth 200 points and involved a Blind NoSQL Injection attack.</p>
-<p>Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&hellip;</p>
-<p>Time to find what their plans are.
-<a href="http://challenges.2020.squarectf.com:9541">http://challenges.2020.squarectf.com:9541</a></p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 14, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/web-security">#web security</a>
-                
-                    <a class="tag" href="/tags/nosql-injection">#nosql injection</a>
-                
-                    <a class="tag" href="/tags/squarectf-2020">#squarectf 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/metactf-cybergames-2020-password-here-please/">
-                    MetaCTF Cybergames 2020: Password Here Please
-                </a>
-            </h2>
-            <div>
-                <p><p>This is a write-up for the &ldquo;Password Here Please&rdquo; reverse engineering challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 325 points.</p>
-<p>Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 27, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/reverse-engineering">#reverse engineering</a>
-                
-                    <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/">
-                    MetaCTF CyberGames 2020: Open Thermal Exhaust Port
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the write-up for the &ldquo;Open Thermal Exhaust Port&rdquo; forensics challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 275 points.</p>
-<p>Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&rsquo;m sure that won&rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 25, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/forensics">#forensics</a>
-                
-                    <a class="tag" href="/tags/wireshark">#wireshark</a>
-                
-                    <a class="tag" href="/tags/packet-analysis">#packet analysis</a>
-                
-                    <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/dive-into-dotfiles-part-2/">
-                    Dive Into Dotfiles Part 2
-                </a>
-            </h2>
-            <div>
-                <p><p>Following up on the first article which introduces dotfiles, this one dives into the common challenges to managing dotfiles effectively. We look at approaches to organizing them, techniques to keep them in sync, bootstrapping fresh systems, committing them to version control, etc.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>June 5, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/dotfiles">#dotfiles</a>
-                
-                    <a class="tag" href="/tags/bash">#bash</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+<h2 id="using-your-pdb-with-the-breakpoint-builtin">Using Your Pdb With The breakpoint Builtin</h2>
+<p>As you might already know, we can hardcode a breakpoint into a python program using the following idiom:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pdb; pdb<span style="color:#f92672">.</span>set_trace()
+</span></span></code></pre></div><p>Or, if you&rsquo;re using a debugger other than the stdlib pdb (such as <code>ipdb</code> or <code>gtools.pdb</code>), you might be writing something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> ipdb; ipdb<span style="color:#f92672">.</span>set_trace()
+</span></span></code></pre></div><p>You might also know that Python 3.7 implements a new <code>breakpoint</code> builtin, which lets you set a breakpoint using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>breakpoint()
+</span></span></code></pre></div><p>For all intents and purposes, <code>breakpoint</code> is an alias to <code>pdb.set_trace</code>. Except it is a little more than that. Skimming through the PEP which introduced this builtin - <a href="https://www.python.org/dev/peps/pep-0553/" title="PEP 553: Builtin Breakpoint">PEP 553</a> - leads to some interesting discoveries that we can leverage to make it so that a call to <code>breakpoint</code> results in our custom pdb being used instead of the stdlib one.</p>
+<p>Internally, the <code>breakpoint</code> builtin is basically an alias for <code>sys.breakpointhook</code>. This function, by default, imports <code>pdb</code> and executes <code>pdb.set_trace</code>. However, by overriding the value of the <code>PYTHONBREAKPOINT</code> env var, you can instruct it to use a debugger of your choice. For example, doing <code>export PYTHONBREAKPOINT=ipdb.set_trace</code> in your shell before executing python code with <code>breakpoint</code> calls results in <code>ipdb</code> being used as the debugger! The <code>sys.breakpointhook</code> function also deals with the importing of the module that has the breakpoint function. So as long as the module is in your Python path, just setting the env var will work.</p>
+<p>For our <code>HookPdb</code>, the <code>hookpdb.py</code> file exports a <code>set_trace</code> function. So assuming that this is in your Python path (easiest way to test it is to have it in your current working directory), the following happens:</p>
+<pre tabindex="0"><code>❯ PYTHONBREAKPOINT=hookpdb.set_trace python
+Python 3.9.5 (default, May 14 2021, 00:00:00) 
+[GCC 10.3.1 20210422 (Red Hat 10.3.1-1)] on linux
+Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.
+&gt;&gt;&gt; breakpoint()
+Welcome to HookPdb
+--Return--
+&gt; /home/ajmal/playground/gevent-hang/hookpdb.py(75)set_trace()-&gt;None
+-&gt; mypdb.set_trace()
+(Pdb) 
+</code></pre><p>Notice the <code>Welcome to HookPdb</code> banner when we drop into the debugger!</p>
+<h2 id="concluding-words">Concluding Words</h2>
+<p>As I said earlier, what I have so far is a fairly hacky thing that possibly breaks other features of pdb or has unknown side-effects/consequences. And there is a lot about python, pdb and debuggers that I don&rsquo;t know, so there might be other solutions to my problem that are easier/better/more robust. Regardless, this little dive into the pdb ecosystem was a fun learning experience for me, and I hope you also found it as fun (and hopefully learned a thing or two as well).</p>
+<p>If you have comments, want to point out flaws in my approach, point out mistakes I made, or you just have better ideas, please reach out to me on <a href="https://twitter.com/_ajmalsiddiqui">Twitter</a>!</p>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/python">#python</a>
         
-        <p>Page 1 of 2</p>
-        <div class="paginator-group">
-            
-            
-                <a class="color-link older" href="/page/2/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
+            <a class="tag" href="/tags/pdb">#pdb</a>
         
+            <a class="tag" href="/tags/debugging">#debugging</a>
+        
+      
     </div>
+
 
         
         </div>

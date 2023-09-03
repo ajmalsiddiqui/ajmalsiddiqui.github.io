@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/categories/</link>
+    <description>Recent content in Categories on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 17 Jul 2022 13:00:05 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ctf writeups</title>
+      <link>https://ajmalsiddiqui.me/categories/ctf-writeups/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/ctf-writeups/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>miscellaneous</title>
+      <link>https://ajmalsiddiqui.me/categories/miscellaneous/</link>
+      <pubDate>Sat, 19 Feb 2022 13:54:42 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/miscellaneous/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://ajmalsiddiqui.me/categories/python/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>workflows</title>
+      <link>https://ajmalsiddiqui.me/categories/workflows/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/workflows/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotfiles</title>
+      <link>https://ajmalsiddiqui.me/categories/dotfiles/</link>
+      <pubDate>Tue, 05 Jun 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/dotfiles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JavaScript</title>
+      <link>https://ajmalsiddiqui.me/categories/javascript/</link>
+      <pubDate>Wed, 07 Feb 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>software development</title>
+      <link>https://ajmalsiddiqui.me/categories/software-development/</link>
+      <pubDate>Wed, 07 Feb 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/software-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>backend development</title>
+      <link>https://ajmalsiddiqui.me/categories/backend-development/</link>
+      <pubDate>Mon, 15 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/categories/backend-development/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

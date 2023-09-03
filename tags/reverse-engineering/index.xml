@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>reverse engineering on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/reverse-engineering/</link>
+    <description>Recent content in reverse engineering on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 27 Oct 2020 10:38:30 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/reverse-engineering/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MetaCTF Cybergames 2020: Password Here Please</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/</link>
+      <pubDate>Tue, 27 Oct 2020 10:38:30 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/</guid>
+      <description>&lt;p&gt;This is a write-up for the &amp;ldquo;Password Here Please&amp;rdquo; reverse engineering challenge from &lt;a href=&#34;https://metactf.com/cybergames&#34; title=&#34;MetaCTF CyberGames 2020&#34;&gt;MetaCTF CyberGames 2020&lt;/a&gt;, which was worth 325 points.&lt;/p&gt;
+&lt;p&gt;Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&amp;rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&amp;hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

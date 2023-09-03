@@ -2,22 +2,22 @@
 
 <html lang="en">
     <head>
-	<meta name="generator" content="Hugo 0.98.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Ajmal&#39;s Website</title>
+    <title>Diving Into Unfamiliar Codebases | Ajmal&#39;s Website</title>
 
     
     
     <meta name="author" content="Mohammed Ajmal Siddiqui" />
-    <meta name="description" content="Coder, car/bike lover, polyglot." />
+    <meta name="description" content="Whether you&amp;rsquo;re starting out in a new job or team, or if you&amp;rsquo;re trying to contribute to a Open Source project that you&amp;rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&amp;rsquo;t start all projects from scratch. This isn&amp;rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&amp;rsquo;ve picked up to get up to speed with a new codebase in this post.
+" />
     
 
     
-    <link rel="canonical" href="https://ajmalsiddiqui.me/" />
+    <link rel="canonical" href="https://ajmalsiddiqui.me/blog/diving-into-unfamiliar-codebases/" />
 
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -39,8 +39,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="Ajmal's Website" />
     
 <script type="application/javascript">
 var doNotTrack = false;
@@ -183,312 +181,80 @@ if (!doNotTrack) {
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Coder, car/bike lover, polyglot.</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/google-ctf-2022-treebox/">
-                    Google CTF 2022: Treebox
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the write-up for Treebox, one of the easier Sandbox Escape challenges from Google CTF 2022.</p>
-<p>The challenge statement says, &ldquo;I think I finally got Python sandboxing right.&rdquo;, and we&rsquo;re provided with a hostname/port pair and (conveniently) <a href="https://github.com/google/google-ctf/blob/master/2022/sandbox-treebox/challenge/treebox.py" title="The Treebox Source Code">the source code of the sandbox</a>. The flag is in a file called <code>flag</code> in the current working directory of the sandbox process.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>July 17, 2022</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/sandbox-escape">#sandbox escape</a>
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/google-ctf-2022">#google ctf 2022</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/my-2021-in-tech/">
-                    My 2021 in Tech
-                </a>
-            </h2>
-            <div>
-                <p><p>It is that time of the year again. Or, to be precise, it is 51 days after that time of <em>last</em> year. I&rsquo;ve been remiss in my schedule for these posts. But it is the time when I reflect upon my growth in tech over the past year. Like <a href="/blog/my-2020-in-tech/" title="My 2020 in Tech">last years post</a>, this one goes over what I learned, some of the opinions I formed, what I could have done better, and what I think I should focus on in 2022.</p>
-<p>While I do this primarily to track my progress, I do hope that those who read about my growth find it instructive, and walk away having gained something from it. With that happy thought, let&rsquo;s get started.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>February 19, 2022</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/your-first-programming-language/">
-                    Your First Programming Language
-                </a>
-            </h2>
-            <div>
-                <p><p>What programming language should you learn first? Back in University, juniors who wanted to get on the programming roller coaster often asked me this. After much deliberation, I think I have my answer. In this post I express why I think a lot of conventional wisdom here isn&rsquo;t the best, and what I suggest as the first language for getting started with coding.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 7, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-                    <a class="tag" href="/tags/lisp">#lisp</a>
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/extending-the-python-debugger/">
-                    Extending The Python Debugger
-                </a>
-            </h2>
-            <div>
-                <p><p>For a little while now I&rsquo;ve had this itch with pdb that I&rsquo;ve been wanting to scratch. I wanted a limited version of <a href="https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html" title="gdb User Defined Hooks">the hooks feature from gdb</a> so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 16, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/pdb">#pdb</a>
-                
-                    <a class="tag" href="/tags/debugging">#debugging</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/diving-into-unfamiliar-codebases/">
-                    Diving Into Unfamiliar Codebases
-                </a>
-            </h2>
-            <div>
-                <p><p>Whether you&rsquo;re starting out in a new job or team, or if you&rsquo;re trying to contribute to a Open Source project that you&rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&rsquo;t start all projects from scratch. This isn&rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&rsquo;ve picked up to get up to speed with a new codebase in this post.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>June 13, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/my-2020-in-tech/">
-                    My 2020 in Tech
-                </a>
-            </h2>
-            <div>
-                <p><p>2020 has easily been the most profound year for me as a tech enthusiast. I graduated with a CS degree, got an amazing job, picked up 2 new languages (Go and Clojure), revisited 2 other langauges that I <em>thought</em> I knew but clearly didn&rsquo;t (C and Rust), and explored many new domains (most notably cybersecurity and cloud engineering). This post is a loosely organized collection of my thoughts and experiences related to each of these items, as well as some insight into how I achieved some of the things I achieved this year.</p>
-<p>So if you&rsquo;re going to be kind enough to indulge me, let&rsquo;s start talking!</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>January 1, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/squarectf-2020-deep-web-blog/">
-                    Squarectf 2020: Deep Web Blog
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the writeup for the &ldquo;Deep Web Blog&rdquo; web challenge from <a href="https://squarectf.com/" title="SquareCTF 2020">SquareCTF 2020</a>, which was worth 200 points and involved a Blind NoSQL Injection attack.</p>
-<p>Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&hellip;</p>
-<p>Time to find what their plans are.
-<a href="http://challenges.2020.squarectf.com:9541">http://challenges.2020.squarectf.com:9541</a></p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 14, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/web-security">#web security</a>
-                
-                    <a class="tag" href="/tags/nosql-injection">#nosql injection</a>
-                
-                    <a class="tag" href="/tags/squarectf-2020">#squarectf 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/metactf-cybergames-2020-password-here-please/">
-                    MetaCTF Cybergames 2020: Password Here Please
-                </a>
-            </h2>
-            <div>
-                <p><p>This is a write-up for the &ldquo;Password Here Please&rdquo; reverse engineering challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 325 points.</p>
-<p>Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 27, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/reverse-engineering">#reverse engineering</a>
-                
-                    <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/">
-                    MetaCTF CyberGames 2020: Open Thermal Exhaust Port
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the write-up for the &ldquo;Open Thermal Exhaust Port&rdquo; forensics challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 275 points.</p>
-<p>Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&rsquo;m sure that won&rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 25, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/forensics">#forensics</a>
-                
-                    <a class="tag" href="/tags/wireshark">#wireshark</a>
-                
-                    <a class="tag" href="/tags/packet-analysis">#packet analysis</a>
-                
-                    <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/dive-into-dotfiles-part-2/">
-                    Dive Into Dotfiles Part 2
-                </a>
-            </h2>
-            <div>
-                <p><p>Following up on the first article which introduces dotfiles, this one dives into the common challenges to managing dotfiles effectively. We look at approaches to organizing them, techniques to keep them in sync, bootstrapping fresh systems, committing them to version control, etc.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>June 5, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/dotfiles">#dotfiles</a>
-                
-                    <a class="tag" href="/tags/bash">#bash</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+<h1 class="post-title">Diving Into Unfamiliar Codebases</h1>
+    
+    <time>June 13, 2021</time>
+    
+    <div>
+        <p>
+        <p>Whether you&rsquo;re starting out in a new job or team, or if you&rsquo;re trying to contribute to a Open Source project that you&rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&rsquo;t start all projects from scratch. This isn&rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&rsquo;ve picked up to get up to speed with a new codebase in this post.</p>
+<p>Starting to work on an existing, large unfamiliar codebase is radically different from starting a project from scratch. I find the latter easier, because you essentially start with a clean slate and start to incrementally add small chunks of code that you&rsquo;re familiar with.</p>
+<p>Looking at an existing piece of software, however, is a whole other ballgame. Even well written software is hard to reason about. Code is still written for computers instead of humans. Code may be poorly documented. Or it may use design or architecture patterns that you&rsquo;re not familiar with. Or it may have hundreds of layers of abstraction (I&rsquo;m looking at you, Java). And most software out there isn&rsquo;t very well written. Heck, the very best code is no code at all.</p>
+<p>We&rsquo;ve been trying to make code more human-friendly for decades now. There are coding standards, design patterns, autogenerated documentation and test suites, and even crazy stuff like <a href="http://literateprogramming.com/">literate programming</a> (the <a href="https://github.com/nakkaya/ferret/blob/master/ferret.org">ferret</a> project is my fav example). And yet, despite all this, code is still meant to be read by computers first and humans second. Thus it is likely that the next time you need to dig into the innards of something new, it will not be trivial.</p>
+<p>Working with existing codebases is a fundamental skill for a software engineer. Something that you hone over time. And yet I don&rsquo;t see this talked about very often, so here&rsquo;s my first attempt at starting the conversation.</p>
+<h2 id="run-the-code">Run the Code</h2>
+<p>If you&rsquo;re anything like me, the first few minutes you spend to eyeball the code quickly spiral into a negative reinforcement loop of &ldquo;oh I don&rsquo;t understand&rdquo; followed by looking at a different code file/function, eventually terminating with you ending up scrolling through Reddit. This is bad. Eyeballing code rarely gets you far (unless you&rsquo;re a prodigy or already familiar with the domain that the project is for).</p>
+<p>So once you&rsquo;ve gotten a birds eye view of the codebase, get out of that eyeballing loop even before you enter it. Instead, a much more productive use of your time is to just run the code.</p>
+<p>I find it astonishing that running a program is a non-trivial process in this day and age. It has improved a lot over the last few decades, but it is still hard. Some kinds of projects are especially hard to setup. Such as things that do low level stuff, networking related projects (especially stuff which is layer 4 or below), service oriented stuff, etc. There are so many build systems and dependency managers and all sorts of tooling to wrap your head around.</p>
+<p>So just getting the code to run comes with a plethora of benefits - it familiarizes you with the build system that the project uses, the dependency management stuff, some of the build/run automation tooling, the basic configuration you need, and any special requirements that the program may have (for example superuser privileges or extra capabilities). And that is a good start. It is also a prerequisite for almost all of the other tricks I suggest in this post.</p>
+<blockquote>
+<p>Pro tip: if you&rsquo;re having trouble with building/running the software or if documentation is scarce, taking a look at the CI config for the project can be a quick and easy way to see exactly what you need to build something. Assuming such a file exists of course. If you&rsquo;re having trouble building on your system, it might be a good start to try and bind-mount the project files into a clean docker container and attempt the build there.</p>
+</blockquote>
+<h2 id="grepping">Grepping</h2>
+<p>If you already have some idea of what you&rsquo;re looking for in the codebase (say the specific component that is related to the issue you&rsquo;re tackling, or if you&rsquo;re wondering how a particular thing works), grepping for keywords is a shortcut to finding the needles in the haystack. This is one of the first things I end up doing when tackling an unfamiliar codebase. You can grep for something through all the files in all subdirectories of the current dir using the <code>-R</code> flag. There are quite a few tricks that I&rsquo;ve come to use when grepping through codebases, and I&rsquo;ll list them down here:</p>
+<ul>
+<li>Use <code>git grep</code>. This is like <code>grep -R</code> but it additionally automatically ignores anything that is ignored by git (i..e. stuff in the <code>.gitignore</code> file or in <code>.git/info/exclude</code>). This is particularly useful when working with python codebases that have virtualenvs, or when your build artefacts are things like a static website.</li>
+<li>Case insensitive searches with the <code>-i</code> flag improve your odds of landing a hit that you otherwise wouldn&rsquo;t have landed because of casing issues. Especially useful for codebases in languages that use camelCase.</li>
+<li>Use wildcard characters (the <code>.</code>) and the <code>*</code> operator to search smart. Using this in combination with <code>-i</code> can uusually yield very good results.</li>
+<li>Filter out irrelevant results using the <code>-v</code> flag.</li>
+</ul>
+<h2 id="file-archealogy---using-commit-history">File Archealogy - Using Commit History</h2>
+<p>You will eventually narrow your area of interest to one or two components (and a handful of files associated with them). At this point, you&rsquo;ll have to start going from a birds eye view to something more specific. A great way to do this is to look at the history of a file in terms of commits.</p>
+<p>It is hard to overemphasize the importance of a thoughtfully authored commit. A commit represents a minimal set of changes that allow you to achieve a single, well defined, tangible result. It is the smallest building block of the version history of a project, and thus it has the least amount of cruft. Looking at commits is an excellent way to see how more experienced people have approached modifying the codebase, and how various parts of the codebase might be related. It is thus quite enlightening to smartly inspect commits.</p>
+<p>You can view all the commits that modified a particular file using <code>git log &lt;filename&gt;</code>, and I usually scroll down to the very bottom of the history to start with the point where the file was created. I then work my way upwards, skimming through the commit messages to get some sense of how the file has changed and what it is responsible for. Now you know why it is so important to [write good commit messages][3]. Look out for interesting commits, useful keywords, etc and note them down if you think it&rsquo;ll help (keep a copy of the commit hash and message, or at least a keyword in the message so that you can quickly find the commit via a text search).</p>
+<p>And then it is time to see how the code shaped up. The <code>-p</code> flag to <code>git log</code> shows you the diff for each commit in addition to the other details. So do a <code>git log -p &lt;filename&gt;</code>, hit <code>G</code> to fast-travel to the bottom (I&rsquo;m assuming you&rsquo;re using <code>less</code> as a pager, which is usually the default), and squint at the diffs. Try to understand how the file evolved. And if you don&rsquo;t, it is okay. Time to move on.</p>
+<h2 id="working-with-commits">Working With Commits</h2>
+<p>At this point, you should ideally have some understanding of the life of the file. You probably have identified a few interesting commits, and it is time to zoom in on them. Looking at the diffs for a single file is rarely enough since many useful commits will touch multiple files to effect their goals. This is where your list of useful commits comes into play. For each commit, <code>git show &lt;commit hash&gt;</code> will show you the details of the commit. This will indicate the diffs for all the files that this commit touched. This is a good time to refine your mental model of how source files in the codebase are related.</p>
+<blockquote>
+<p><code>git show</code> can show information about any git object!</p>
+</blockquote>
+<p>Sometimes, you want an even more complete picture of what a commit does. The best way to reason about this is to look at the codebase the way it was at that commit. <code>git checkout &lt;commit hash&gt;</code> is your friend. Once you checkout the commit, you can build and run the code and see it in action. You can also take another step back in the history and run the code again to observe what the codebase was like before the commit changed it. This is a good way to analyse bugfixes - you can reproduce the bug and see what causes it, and then move to the commits that fix the bug, and then run it again to see the fix in action.</p>
+<h2 id="print-statements">Print Statements</h2>
+<p>You have a few code paths of interest and you want to start toying with the code. So pepper these code paths with a few print statements and run the thing! This gives you some insight into the flow of the program. Especially the  &ldquo;critical paths&rdquo; that encompass the main functionality of the program. Print statements are particularly useful when you put them in blocks of conditional statements, and try to trigger different blocks. This &ldquo;poor man&rsquo;s debugger&rdquo; is a quick-and-dirty way to start analysing specific &ldquo;flows&rdquo; in the program.</p>
+<h2 id="using-the-test-suite">Using the Test Suite</h2>
+<p>Tests aren&rsquo;t just ways to ensure that your code does what is supposed to do. They also end up &ldquo;documenting&rdquo; the expected behaviour of the code by virtue of their very existence! This is useful since it can tell us what a specific function/component/system is <em>expected</em> to do. Looking at the test files is a great way to quickly see what different things do. Integration tests are particularly helpful because they test business logic and exercise large, multi-component parts of the codebase. Unit tests can provide some insight into otherwise undocumented functions.</p>
+<p>This approach becomes a lot more powerful if you modify the parameters, inputs or assertions in the tests and see how things break (and if they don&rsquo;t, you might have found a bug, or worse, a poorly written test!).</p>
+<h2 id="surgery-using-a-debugger">Surgery Using A Debugger</h2>
+<p>I&rsquo;ve emphasized on the importance of getting familiar with using a debugger [in previous articles][4], and this section should give you another reason for learning how to use debuggers effectively. One of the most effective ways to become intimately familiar with code is to step through it with a debugger, looking at how stuff changes, the flow of the program, etc. You can also use this to trigger conditional code paths that are hard to trigger (by modifying variables on the fly!).</p>
+<p>Most projects, even small ones, are still too big for one to fire up a debugger and go over every line. I find it more productive to set breakpoints in interesting functions or code paths and then step through/over codepaths starting from said breakpoint. Makes the process fit in the head a lot more easily.</p>
+<p>This also prepares you quite well for actually hacking on the codebase, which means you&rsquo;ll be a lot more productive when you decide to actually contribute to the project you&rsquo;re looking at.</p>
+<h2 id="tackle-an-issue-or-pretend-to-do-so">Tackle an Issue (Or Pretend to Do So)</h2>
+<p>Picking up a (simple) issue is easily one of the best ways to have a targetted path to gaining some degree of familiarity with a codebase. And you&rsquo;re also helping out the maintainers if you manage to tackle it! This will be a requisite if you&rsquo;re doing it in a work context, but even for curiosity-driven forays into interesting open source software, working on an issue can be very productive. It lets you exercise pretty much everything this post covers (and a lot more) in an environment with well defined objectives. So don&rsquo;t be scared and go ahead and pick something up!</p>
+<blockquote>
+<p>Contributing to open source projects is a topic that is far out of the scope of this article (and there is a lot of material out there for this already), so I won&rsquo;t go into that. But I will drop some friendly advice about making sure that you go over and respect the contribution guidelines of the project, make sure that the license is friendly, ensure that you meet any requirements they have from contributors, and are respectful of the people you&rsquo;re interacting with. The official IRC/discourse/slack/whatever channels are a great place to hang out and find help for projects that have them. Don&rsquo;t forget to have fun!</p>
+</blockquote>
+<p>If you aren&rsquo;t comfortable in committing to an issue yet, you can also pretend to do so. Take an issue that has already has a fix, and pretend you&rsquo;re trying to fix it. Spend some time on it, and if you actually are able to come up with a fix, congratulations! That should inspire you to pick up an unsolved issue perhaps. Regardless of whether or not you manage to fix the issue, make sure you closely look at the commits that fix it. This is an opportunity for some serious learning! Extra points if you identify doubts or suggestions for improvement related to the fix and talk about them to the maintainers.</p>
+<blockquote>
+<p>More unsolicited advice: when I&rsquo;m working on an issue in a new codebase, I often favour the TDD (Test Driven Development) methodology a lot. I find that it is one of the quickest and most effective ways for me to get productive in a way that lets me develop fast while minimizing breakage. I do tend to do TDD even with codebases that I am familiar with as well, it is a great way of working!</p>
+</blockquote>
+<p>[3]: TODO the good commit message link
+[4]:  TODO rel link to mastering your tools</p>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/misc">#misc</a>
         
-        <p>Page 1 of 2</p>
-        <div class="paginator-group">
-            
-            
-                <a class="color-link older" href="/page/2/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
-        
+      
     </div>
+
 
         
         </div>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/</link>
+    <description>Recent content in Tags on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 17 Jul 2022 13:00:05 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>google ctf 2022</title>
+      <link>https://ajmalsiddiqui.me/tags/google-ctf-2022/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/google-ctf-2022/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://ajmalsiddiqui.me/tags/python/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sandbox escape</title>
+      <link>https://ajmalsiddiqui.me/tags/sandbox-escape/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/sandbox-escape/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>misc</title>
+      <link>https://ajmalsiddiqui.me/tags/misc/</link>
+      <pubDate>Sat, 19 Feb 2022 13:54:42 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/misc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming-languages</title>
+      <link>https://ajmalsiddiqui.me/tags/programming-languages/</link>
+      <pubDate>Sat, 19 Feb 2022 13:54:42 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/programming-languages/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lisp</title>
+      <link>https://ajmalsiddiqui.me/tags/lisp/</link>
+      <pubDate>Sun, 07 Nov 2021 17:58:57 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/lisp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debugging</title>
+      <link>https://ajmalsiddiqui.me/tags/debugging/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pdb</title>
+      <link>https://ajmalsiddiqui.me/tags/pdb/</link>
+      <pubDate>Thu, 16 Sep 2021 20:01:59 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/pdb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nosql injection</title>
+      <link>https://ajmalsiddiqui.me/tags/nosql-injection/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/nosql-injection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://ajmalsiddiqui.me/tags/security/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>squarectf 2020</title>
+      <link>https://ajmalsiddiqui.me/tags/squarectf-2020/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/squarectf-2020/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>web security</title>
+      <link>https://ajmalsiddiqui.me/tags/web-security/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/web-security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>metactf cybergames 2020</title>
+      <link>https://ajmalsiddiqui.me/tags/metactf-cybergames-2020/</link>
+      <pubDate>Tue, 27 Oct 2020 10:38:30 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/metactf-cybergames-2020/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reverse engineering</title>
+      <link>https://ajmalsiddiqui.me/tags/reverse-engineering/</link>
+      <pubDate>Tue, 27 Oct 2020 10:38:30 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/reverse-engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>forensics</title>
+      <link>https://ajmalsiddiqui.me/tags/forensics/</link>
+      <pubDate>Sun, 25 Oct 2020 21:04:16 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/forensics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>packet analysis</title>
+      <link>https://ajmalsiddiqui.me/tags/packet-analysis/</link>
+      <pubDate>Sun, 25 Oct 2020 21:04:16 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/packet-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wireshark</title>
+      <link>https://ajmalsiddiqui.me/tags/wireshark/</link>
+      <pubDate>Sun, 25 Oct 2020 21:04:16 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/wireshark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bash</title>
+      <link>https://ajmalsiddiqui.me/tags/bash/</link>
+      <pubDate>Tue, 05 Jun 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/bash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotfiles</title>
+      <link>https://ajmalsiddiqui.me/tags/dotfiles/</link>
+      <pubDate>Tue, 05 Jun 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/dotfiles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JavaScript</title>
+      <link>https://ajmalsiddiqui.me/tags/javascript/</link>
+      <pubDate>Wed, 07 Feb 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>API development</title>
+      <link>https://ajmalsiddiqui.me/tags/api-development/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/api-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>backend</title>
+      <link>https://ajmalsiddiqui.me/tags/backend/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/backend/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NodeJS</title>
+      <link>https://ajmalsiddiqui.me/tags/nodejs/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/nodejs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NPM</title>
+      <link>https://ajmalsiddiqui.me/tags/npm/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/npm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>server side</title>
+      <link>https://ajmalsiddiqui.me/tags/server-side/</link>
+      <pubDate>Wed, 24 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/tags/server-side/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

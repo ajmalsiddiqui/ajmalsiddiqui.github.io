@@ -2,22 +2,23 @@
 
 <html lang="en">
     <head>
-	<meta name="generator" content="Hugo 0.98.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Ajmal&#39;s Website</title>
+    <title>MetaCTF CyberGames 2020: Open Thermal Exhaust Port | Ajmal&#39;s Website</title>
 
     
     
     <meta name="author" content="Mohammed Ajmal Siddiqui" />
-    <meta name="description" content="Coder, car/bike lover, polyglot." />
+    <meta name="description" content="This is the write-up for the &amp;ldquo;Open Thermal Exhaust Port&amp;rdquo; forensics challenge from MetaCTF CyberGames 2020, which was worth 275 points.
+Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&amp;rsquo;m sure that won&amp;rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.
+" />
     
 
     
-    <link rel="canonical" href="https://ajmalsiddiqui.me/" />
+    <link rel="canonical" href="https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/" />
 
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -39,8 +40,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="/index.xml" title="Ajmal's Website" />
     
 <script type="application/javascript">
 var doNotTrack = false;
@@ -183,312 +182,91 @@ if (!doNotTrack) {
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Coder, car/bike lover, polyglot.</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/google-ctf-2022-treebox/">
-                    Google CTF 2022: Treebox
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the write-up for Treebox, one of the easier Sandbox Escape challenges from Google CTF 2022.</p>
-<p>The challenge statement says, &ldquo;I think I finally got Python sandboxing right.&rdquo;, and we&rsquo;re provided with a hostname/port pair and (conveniently) <a href="https://github.com/google/google-ctf/blob/master/2022/sandbox-treebox/challenge/treebox.py" title="The Treebox Source Code">the source code of the sandbox</a>. The flag is in a file called <code>flag</code> in the current working directory of the sandbox process.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>July 17, 2022</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/sandbox-escape">#sandbox escape</a>
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/google-ctf-2022">#google ctf 2022</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/my-2021-in-tech/">
-                    My 2021 in Tech
-                </a>
-            </h2>
-            <div>
-                <p><p>It is that time of the year again. Or, to be precise, it is 51 days after that time of <em>last</em> year. I&rsquo;ve been remiss in my schedule for these posts. But it is the time when I reflect upon my growth in tech over the past year. Like <a href="/blog/my-2020-in-tech/" title="My 2020 in Tech">last years post</a>, this one goes over what I learned, some of the opinions I formed, what I could have done better, and what I think I should focus on in 2022.</p>
-<p>While I do this primarily to track my progress, I do hope that those who read about my growth find it instructive, and walk away having gained something from it. With that happy thought, let&rsquo;s get started.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>February 19, 2022</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/your-first-programming-language/">
-                    Your First Programming Language
-                </a>
-            </h2>
-            <div>
-                <p><p>What programming language should you learn first? Back in University, juniors who wanted to get on the programming roller coaster often asked me this. After much deliberation, I think I have my answer. In this post I express why I think a lot of conventional wisdom here isn&rsquo;t the best, and what I suggest as the first language for getting started with coding.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 7, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-                    <a class="tag" href="/tags/lisp">#lisp</a>
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/extending-the-python-debugger/">
-                    Extending The Python Debugger
-                </a>
-            </h2>
-            <div>
-                <p><p>For a little while now I&rsquo;ve had this itch with pdb that I&rsquo;ve been wanting to scratch. I wanted a limited version of <a href="https://sourceware.org/gdb/onlinedocs/gdb/Hooks.html" title="gdb User Defined Hooks">the hooks feature from gdb</a> so that I can automatically execute debugger commands each time execution stops. Today, I ended up scratching that itch by extending Pdb and coding in the functionality I needed. This post talks about how I did so and also covers a loosely organized collection of related Python debugger tricks that you may find useful (or at least fascinating).</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 16, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/python">#python</a>
-                
-                    <a class="tag" href="/tags/pdb">#pdb</a>
-                
-                    <a class="tag" href="/tags/debugging">#debugging</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/diving-into-unfamiliar-codebases/">
-                    Diving Into Unfamiliar Codebases
-                </a>
-            </h2>
-            <div>
-                <p><p>Whether you&rsquo;re starting out in a new job or team, or if you&rsquo;re trying to contribute to a Open Source project that you&rsquo;re new to, having to familiarise yourself with an alien codebase is something a software dev will have to do at some point in their lives. You won&rsquo;t start all projects from scratch. This isn&rsquo;t easy by any measure (at least not for me), but I try to share some of the tricks that I&rsquo;ve picked up to get up to speed with a new codebase in this post.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>June 13, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/my-2020-in-tech/">
-                    My 2020 in Tech
-                </a>
-            </h2>
-            <div>
-                <p><p>2020 has easily been the most profound year for me as a tech enthusiast. I graduated with a CS degree, got an amazing job, picked up 2 new languages (Go and Clojure), revisited 2 other langauges that I <em>thought</em> I knew but clearly didn&rsquo;t (C and Rust), and explored many new domains (most notably cybersecurity and cloud engineering). This post is a loosely organized collection of my thoughts and experiences related to each of these items, as well as some insight into how I achieved some of the things I achieved this year.</p>
-<p>So if you&rsquo;re going to be kind enough to indulge me, let&rsquo;s start talking!</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>January 1, 2021</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/misc">#misc</a>
-                
-                    <a class="tag" href="/tags/programming-languages">#programming-languages</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/squarectf-2020-deep-web-blog/">
-                    Squarectf 2020: Deep Web Blog
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the writeup for the &ldquo;Deep Web Blog&rdquo; web challenge from <a href="https://squarectf.com/" title="SquareCTF 2020">SquareCTF 2020</a>, which was worth 200 points and involved a Blind NoSQL Injection attack.</p>
-<p>Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&hellip;</p>
-<p>Time to find what their plans are.
-<a href="http://challenges.2020.squarectf.com:9541">http://challenges.2020.squarectf.com:9541</a></p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 14, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/web-security">#web security</a>
-                
-                    <a class="tag" href="/tags/nosql-injection">#nosql injection</a>
-                
-                    <a class="tag" href="/tags/squarectf-2020">#squarectf 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/metactf-cybergames-2020-password-here-please/">
-                    MetaCTF Cybergames 2020: Password Here Please
-                </a>
-            </h2>
-            <div>
-                <p><p>This is a write-up for the &ldquo;Password Here Please&rdquo; reverse engineering challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 325 points.</p>
-<p>Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 27, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/reverse-engineering">#reverse engineering</a>
-                
-                    <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/">
-                    MetaCTF CyberGames 2020: Open Thermal Exhaust Port
-                </a>
-            </h2>
-            <div>
-                <p><p>This is the write-up for the &ldquo;Open Thermal Exhaust Port&rdquo; forensics challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 275 points.</p>
-<p>Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&rsquo;m sure that won&rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 25, 2020</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/security">#security</a>
-                
-                    <a class="tag" href="/tags/forensics">#forensics</a>
-                
-                    <a class="tag" href="/tags/wireshark">#wireshark</a>
-                
-                    <a class="tag" href="/tags/packet-analysis">#packet analysis</a>
-                
-                    <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="/blog/dive-into-dotfiles-part-2/">
-                    Dive Into Dotfiles Part 2
-                </a>
-            </h2>
-            <div>
-                <p><p>Following up on the first article which introduces dotfiles, this one dives into the common challenges to managing dotfiles effectively. We look at approaches to organizing them, techniques to keep them in sync, bootstrapping fresh systems, committing them to version control, etc.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>June 5, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/dotfiles">#dotfiles</a>
-                
-                    <a class="tag" href="/tags/bash">#bash</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+<h1 class="post-title">MetaCTF CyberGames 2020: Open Thermal Exhaust Port</h1>
+    
+    <time>October 25, 2020</time>
+    
+    <div>
+        <p>
+        <p>This is the write-up for the &ldquo;Open Thermal Exhaust Port&rdquo; forensics challenge from <a href="https://metactf.com/cybergames" title="MetaCTF CyberGames 2020">MetaCTF CyberGames 2020</a>, which was worth 275 points.</p>
+<p>Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&rsquo;m sure that won&rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.</p>
+<p>This is a basic forensics challenge intended to be an introduction to packet analysis tools like wireshark. The challenge is simple: we have a pcap (packet capture) file from a TCP connect nmap scan, and we need to figure out the sum of the open ports on the target that was scanned.</p>
+<p>Let&rsquo;s dive in!</p>
+<blockquote>
+<p>Feel free to skip to the Analysing the Pcap section if you already know all the basics in the upcoming sections!</p>
+</blockquote>
+<h2 id="terms-and-definitions">Terms and Definitions</h2>
+<p>You should know a few (basic) things in order to understand and work out this problem.</p>
+<ol>
+<li>Port scanning - scanning a machine (called a &ldquo;host&rdquo;) or many hosts for open ports.</li>
+<li>nmap - Perhaps the most popular port scanner out there. Extremely powerful, extensible, and very widely used.</li>
+<li>pcap - Refers to packet capture files. These are files that contain a record of all the packets that went through a network interface. In other words, it&rsquo;s like a log of network activity.</li>
+<li>wireshark - A popular and powerful tool for analysing pcap files that lets you filter through packet, construct powerful, fine grained queries to find packets, etc. Also used as a network packet sniffer.</li>
+</ol>
+<h2 id="so-what-is-a-tcp-connect">So What is a TCP Connect?</h2>
+<p>Before we even look at the network packets, let&rsquo;s go over some TCP knowledge that we&rsquo;ll need.</p>
+<p>The challenge description tells us that we&rsquo;re looking at the pcap dump of a TCP connect scan done using nmap. This just refers to how a connection is established between two hosts via TCP. In TCP, a connection is established via a process called the TCP 3-Way Handshake. This is what is looks like when a client connects with a server:</p>
+<ol>
+<li>The client sends a <code>SYN</code> message to the server. <code>SYN</code> refers to a Synchronize Sequence Number message. Without diving into the nitty gritty of this, it is a way of telling the server what sequence number the client packets will start with. This is important because the server will have to keep track of the order of packets.</li>
+<li>The server responds with a <code>SYN + ACK</code> message. This is a combination of 2 messages in a single response (a technique known as piggybacking, which helps reduce the number of messages that need to be exchanged). The first message is a <code>SYN</code>, just like the previous one. This time, the server tells the client what sequence number packets coming from the server will start from. The second message is an <code>ACK</code>, for &ldquo;Acknowledgement&rdquo;. This is how a server indicates to the client that it received the previous message.</li>
+<li>The handshake completes with the client sending a TCP <code>ACK</code> message, which indicates to the server that the client also received the servers reply.</li>
+</ol>
+<p>At this point, the client and the server can exchange data.</p>
+<p>But what happens if the server does not want to connect?</p>
+<p>In this case, during the second step, the server replies with <code>RST + ACK</code>, where the <code>RST</code> means &ldquo;Reset&rdquo;. This is how the server says, &ldquo;I acknowledge that I got your message but you cannot connect with me&rdquo;.</p>
+<p>There&rsquo;s obviously a lot more to TCP, but this is all we need to solve this challenge. So let&rsquo;s move on.</p>
+<h2 id="setting-things-up">Setting Things Up</h2>
+<p>Setup is simple. You just grab the pcap file from the CTF challenge page, and install wireshark on your system.</p>
+<h2 id="analysing-the-pcap">Analysing the Pcap</h2>
+<p>Let&rsquo;s start looking at what we have. Load the pcap into wireshark.</p>
+<p>If you&rsquo;re starting wireshark from the terminal, like I did, you can give the pcap filename as an argument to wireshark.</p>
+<pre tabindex="0"><code>wireshark nmap_scan.pcapng
+</code></pre><p>Wireshark starts with an interface that looks like this:</p>
+<p><img src="https://i.ibb.co/6Xv9qbK/wireshark1.png" alt="Opening the pcap in wireshark"></p>
+<p>You can immediately see that we have the most crucial stuff in a nice table - source and destination IPs, the protcol, and the information about that packet. Since we&rsquo;re looking at TCP packets, you can see some of the messages we discussed about in the TCP connect primer section.</p>
+<p>Now let&rsquo;s figure out what the open ports are. When nmap does a TCP connect scan, it just tries to connect to every port on it&rsquo;s list. When a connection succeeds, the server responds with a <code>SYN + ACK</code>. When it fails, it responds with an <code>RST + ACK</code>. So our task is to look at all the replies from the server where the source IP is the server IP and the info has a <code>SYN + ACK</code>. Whenever we find such a packet, we understand that the source port is open. And hence we add all the open ports up, and that&rsquo;s the flag.</p>
+<p>At this point, you can start scrolling through the hundreds of packets looking for what you need&hellip;</p>
+<p>&hellip;or you can be smart and use wireshark the way it is supposed to be used!</p>
+<p>What we need to do is filter out the packets that we need. Let&rsquo;s see how we can do that.</p>
+<p>Towards the top of the wireshark interface, right below the buttons, you&rsquo;ll see a long input box with the placeholder text, &ldquo;Apply a display filter&hellip;<!-- raw HTML omitted -->&rdquo;. You can use this to filter packets using a special query language within wireshark.</p>
+<p>We can see that the client IP is <code>10.0.2.15</code> and the server IP is <code>10.0.2.6</code>.</p>
+<p>For starters, we&rsquo;re interested only in server replies, so let&rsquo;s narrow down to only those packets which came from the server. Enter this in the display filter input and press enter. Note that the input box becomes green when a valid query is entered:</p>
+<pre tabindex="0"><code>ip.src == 10.0.2.6
+</code></pre><p>We now see this:</p>
+<p><img src="https://i.ibb.co/V3V8jkq/wireshark2.png" alt="querying based on the source IP"></p>
+<p>This filters out all the packets which have a source IP of 10.0.2.6 (i.e. our server). The display now contains far fewer packets, and all the packets are either <code>SYN + ACK</code> or <code>RST + ACK</code>. This is actually good enough for us to scroll through and add up all the open ports (i.e. the packets with <code>SYN + ACK</code>), but let&rsquo;s refine our query a little to filter out the packets that are from closed ports.</p>
+<p>Try this query:</p>
+<pre tabindex="0"><code>ip.src == 10.0.2.6 and tcp.flags.syn == 1
+</code></pre><p><img src="https://i.ibb.co/5s22wZy/wireshark3.png" alt="querying based on the source IP and the TCP SYN flag set"></p>
+<p>This query adds a new condition stating that the <code>SYN</code> flag (yes, it is technically a flag) should be one, and then combines it with our previous query using the <code>and</code> operator. Effectively, we are looking for packets which have a source IP matching that of the server and having the SYN flag set. We now see exactly what we need!</p>
+<p>Whip out your calculator, add up all the source ports (be careful to avoid duplicates), and you get the flag!</p>
+<p>For completeness, the sum is 80 + 443 + 23 + 21 + 53 + 22 + 3128 = 3770.
+The flag is <code>MetaCTF{3770}</code>.</p>
+<p>Which leaves us with only one task: figuring out why this challenge was called &ldquo;Open Thermal Exhaust Port&rdquo;&hellip;</p>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/security">#security</a>
         
-        <p>Page 1 of 2</p>
-        <div class="paginator-group">
-            
-            
-                <a class="color-link older" href="/page/2/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
+            <a class="tag" href="/tags/forensics">#forensics</a>
         
+            <a class="tag" href="/tags/wireshark">#wireshark</a>
+        
+            <a class="tag" href="/tags/packet-analysis">#packet analysis</a>
+        
+            <a class="tag" href="/tags/metactf-cybergames-2020">#metactf cybergames 2020</a>
+        
+      
     </div>
+
 
         
         </div>

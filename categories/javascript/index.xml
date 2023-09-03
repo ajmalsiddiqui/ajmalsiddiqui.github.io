@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JavaScript on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/categories/javascript/</link>
+    <description>Recent content in JavaScript on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 07 Feb 2018 22:23:18 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/categories/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Syntactical Quirks Of JavaScript Explained</title>
+      <link>https://ajmalsiddiqui.me/blog/syntactical-quirks-in-javascript-explained/</link>
+      <pubDate>Wed, 07 Feb 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/syntactical-quirks-in-javascript-explained/</guid>
+      <description>&lt;p&gt;Tag along for a quick tour of some of the weirder things about JavaScript syntax that, once you pick them up, will (hopefully) become indispensible parts of your JS codebases. We&amp;rsquo;ll look at the spread operator, IIFEs, and implicit returns in arrow functions.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>The Toolkit of a Full Stack Javascript Developer</title>
+      <link>https://ajmalsiddiqui.me/blog/the-toolkit-of-a-full-stack-javascript-developer/</link>
+      <pubDate>Mon, 15 Jan 2018 22:23:18 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/blog/the-toolkit-of-a-full-stack-javascript-developer/</guid>
+      <description>&lt;p&gt;The JavaScript ecosystem of tools and technologies for building applications is neither small nor limited to the web. This article touches upon &lt;em&gt;some&lt;/em&gt; of the options you have for technologies used to build web apps, cross platform applications, desktop apps, and more, while also talking about certain tools that aren&amp;rsquo;t a strict requirement for a full stack developer, but one that most devs probably can&amp;rsquo;t get very far without. Hop on!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ctf-writeups on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/ctf-writeups/</link>
+    <description>Recent content in Ctf-writeups on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 17 Jul 2022 13:00:05 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/ctf-writeups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google CTF 2022: Treebox</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/google-ctf-2022-treebox/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/google-ctf-2022-treebox/</guid>
+      <description>&lt;p&gt;This is the write-up for Treebox, one of the easier Sandbox Escape challenges from Google CTF 2022.&lt;/p&gt;
+&lt;p&gt;The challenge statement says, &amp;ldquo;I think I finally got Python sandboxing right.&amp;rdquo;, and we&amp;rsquo;re provided with a hostname/port pair and (conveniently) &lt;a href=&#34;https://github.com/google/google-ctf/blob/master/2022/sandbox-treebox/challenge/treebox.py&#34; title=&#34;The Treebox Source Code&#34;&gt;the source code of the sandbox&lt;/a&gt;. The flag is in a file called &lt;code&gt;flag&lt;/code&gt; in the current working directory of the sandbox process.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Squarectf 2020: Deep Web Blog</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/</link>
+      <pubDate>Sat, 14 Nov 2020 14:06:35 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/squarectf-2020-deep-web-blog/</guid>
+      <description>&lt;p&gt;This is the writeup for the &amp;ldquo;Deep Web Blog&amp;rdquo; web challenge from &lt;a href=&#34;https://squarectf.com/&#34; title=&#34;SquareCTF 2020&#34;&gt;SquareCTF 2020&lt;/a&gt;, which was worth 200 points and involved a Blind NoSQL Injection attack.&lt;/p&gt;
+&lt;p&gt;Challenge statement: A secret informant has tipped us off that hackers on the deep web have been plotting an attack on Square to steal our treasured Bitcoins&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Time to find what their plans are.
+&lt;a href=&#34;http://challenges.2020.squarectf.com:9541&#34;&gt;http://challenges.2020.squarectf.com:9541&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MetaCTF Cybergames 2020: Password Here Please</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/</link>
+      <pubDate>Tue, 27 Oct 2020 10:38:30 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-password-here-please/</guid>
+      <description>&lt;p&gt;This is a write-up for the &amp;ldquo;Password Here Please&amp;rdquo; reverse engineering challenge from &lt;a href=&#34;https://metactf.com/cybergames&#34; title=&#34;MetaCTF CyberGames 2020&#34;&gt;MetaCTF CyberGames 2020&lt;/a&gt;, which was worth 325 points.&lt;/p&gt;
+&lt;p&gt;Challenge statement: I forgot my bank account password! Luckily for me, I wrote a program that checks if my password is correct just in case I forgot which password I used, so this way I don&amp;rsquo;t lock myself out of my account. Unfortunately, I seem to have lost my password list as well&amp;hellip; Could you take a look and see if you can find my password for me? Part 3 requires some math skills. To solve it, think about what is being done by the exponentiation step. Try rewriting the large number in base 257.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MetaCTF CyberGames 2020: Open Thermal Exhaust Port</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/</link>
+      <pubDate>Sun, 25 Oct 2020 21:04:16 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/metactf-cybergames-2020-open-thermal-exhaust-port/</guid>
+      <description>&lt;p&gt;This is the write-up for the &amp;ldquo;Open Thermal Exhaust Port&amp;rdquo; forensics challenge from &lt;a href=&#34;https://metactf.com/cybergames&#34; title=&#34;MetaCTF CyberGames 2020&#34;&gt;MetaCTF CyberGames 2020&lt;/a&gt;, which was worth 275 points.&lt;/p&gt;
+&lt;p&gt;Challenge statement: Our TCP connect Nmap scan found some open ports it seems. We may only have a pcap of the traffic, but I&amp;rsquo;m sure that won&amp;rsquo;t be a problem! Can you tell us which ones they are? The flag will be the sum of the open ports. For example, if ports 25 and 110 were open, the answer would be MetaCTF{135}.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

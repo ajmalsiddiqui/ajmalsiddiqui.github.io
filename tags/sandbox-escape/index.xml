@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sandbox escape on Ajmal&#39;s Website</title>
+    <link>https://ajmalsiddiqui.me/tags/sandbox-escape/</link>
+    <description>Recent content in sandbox escape on Ajmal&#39;s Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 17 Jul 2022 13:00:05 +0530</lastBuildDate><atom:link href="https://ajmalsiddiqui.me/tags/sandbox-escape/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google CTF 2022: Treebox</title>
+      <link>https://ajmalsiddiqui.me/ctf-writeups/google-ctf-2022-treebox/</link>
+      <pubDate>Sun, 17 Jul 2022 13:00:05 +0530</pubDate>
+      
+      <guid>https://ajmalsiddiqui.me/ctf-writeups/google-ctf-2022-treebox/</guid>
+      <description>&lt;p&gt;This is the write-up for Treebox, one of the easier Sandbox Escape challenges from Google CTF 2022.&lt;/p&gt;
+&lt;p&gt;The challenge statement says, &amp;ldquo;I think I finally got Python sandboxing right.&amp;rdquo;, and we&amp;rsquo;re provided with a hostname/port pair and (conveniently) &lt;a href=&#34;https://github.com/google/google-ctf/blob/master/2022/sandbox-treebox/challenge/treebox.py&#34; title=&#34;The Treebox Source Code&#34;&gt;the source code of the sandbox&lt;/a&gt;. The flag is in a file called &lt;code&gt;flag&lt;/code&gt; in the current working directory of the sandbox process.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
