@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Calling Rust From C And x86 Assembly | Ajmal&#39;s Website</title>
+
+    
+    
+    <meta name="author" content="Mohammed Ajmal Siddiqui" />
+    <meta name="description" content="I was curious about how FFIs (Foreign Function Interfaces) work, and how that relates to compiling code into an executable, so I decided to play with trying to call Rust code from&amp;hellip; x86 assembly. Why? I don&amp;rsquo;t know, but it was fun and I learnt a thing or two along the way.
+" />
+    
+
+    
+    <link rel="canonical" href="https://ajmalsiddiqui.me/blog/calling-rust-from-c-and-x86-assembly/" />
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/main.min.fb057fde3b9dd318b0c2197316dfe995dc3eca7f9a0617107e262ab28363c57f.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WTZP328X14"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-WTZP328X14', { 'anonymize_ip': false });
+}
+</script>
+</head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">Ajmal&#39;s Website</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+      <a class="color-link nav-link" href="https://drive.google.com/file/d/1x6EIpvlooDc7dT0rlyd1qcRH2qcnDPuZ/view" target="_blank" rel="noopener">Resume</a>
+  
+
+  
+    <a class="color-link nav-link" href="/blog/">Blog</a>
+  
+    <a class="color-link nav-link" href="/ctf-writeups/">CTF Write-Ups</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+    <a class="color-link nav-link" href="/categories/">Categories</a>
+  
+
+  <a class="color-link nav-link" href="https://ajmalsiddiqui.me/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="mailto:ajmalsiddiqui21@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/_ajmalsiddiqui" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://linkedin.com/in/ajmal-siddiqui" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+    <a class="social-icon" href="https://medium.com/@ajmalsiddiqui21" target="_blank" rel="noopener" title="Medium">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,2 L26,2 L26,26 L2,26 L2,2 Z M7.72727142,10.0265545 L7.72727142,17.1527156 C7.77112416,17.4097828 7.69008764,17.6723786 7.50898513,17.8600642 L5.81538462,19.9143852 L5.81538462,20.1852847 L10.617683,20.1852847 L10.617683,19.9143852 L8.92408245,17.8600642 C8.74165168,17.6726892 8.65559727,17.4118239 8.69074193,17.1527156 L8.69074193,10.9897526 L12.9059255,20.1852847 L13.3951878,20.1852847 L17.0157294,10.9897526 L17.0157294,18.3190884 C17.0157294,18.514738 17.0157294,18.5523628 16.8877685,18.6802876 L15.5855778,19.9444852 L15.5855778,20.2153846 L21.9083531,20.2153846 L21.9083531,19.9444852 L20.6513252,18.7103876 C20.5403599,18.6258033 20.4853154,18.4867833 20.50831,18.3491883 L20.50831,9.28158097 C20.4853154,9.14398599 20.5403599,9.00496587 20.6513252,8.92038167 L21.9384615,7.68628409 L21.9384615,7.41538462 L17.4824105,7.41538462 L14.3059685,15.3391941 L10.6929541,7.41538462 L6.01861668,7.41538462 L6.01861668,7.68628409 L7.52403936,9.49980554 C7.67182769,9.63301305 7.74730311,9.82863473 7.72727142,10.0265545 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/ajmalsiddiqui" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+    <p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+    <p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js" integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin="anonymous"></script>
+</footer>
+
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Calling Rust From C And x86 Assembly</h1>
+    
+    <time>February 28, 2024</time>
+    
+    <div>
+        <p>
+        <p>I was curious about how FFIs (Foreign Function Interfaces) work, and how that relates to compiling code into an executable, so I decided to play with trying to call Rust code from&hellip; x86 assembly. Why? I don&rsquo;t know, but it was fun and I learnt a thing or two along the way.</p>
+<p>I was already quite familiar with most of the related concepts, and the trivial x86 assembly I&rsquo;d have to write felt well within the tolerance levels of a reasonably curious programmer, so I was expecting this to be straightforward.</p>
+<p>It wasn&rsquo;t.</p>
+<p>There are a lot of subtleties and nitty-gritty details that come with trying to manipulate build toolchains at such a low level, and I ran into some head-scratchers along the way. This post is a distillation of some of the things I learned while trying to make Rust, C and x86 assembly play nice together.</p>
+<p>This post assumes a Linux environment. You&rsquo;ll need basic familiarity with C and Rust, and you should know (at a high level) what compilers, linkers, object files, etc are. You should know what assembly language is, and what it looks like. I&rsquo;ll provide enough explanation for the minimal assembly that we&rsquo;re going to write today, but any familiarity with x86 assembly is a bonus. Quick &ldquo;tooltips&rdquo; with explanations about relevant things are scattered throughout the post.</p>
+<blockquote>
+<p>Details of the exact versions of rustc, gcc, nasm, etc used here are at the very end of the post.</p>
+</blockquote>
+<h2 id="calling-rust-from-c">Calling Rust from C</h2>
+<p>Our eventual goal is to call Rust from assembly, but let&rsquo;s start with something a little more tame - trying to call a Rust function from C code. Admittedly, this is the opposite of what you&rsquo;d usually see in the wild in polyglot codebases that result in a single executable. Normally, you&rsquo;d write FFI wrappers in Rust that call C functions, often from a library.</p>
+<blockquote>
+<p>FFI stands for Foreign Function Interface. This is a technique used to call functions written in a language other than the one you&rsquo;re using. Often, this is used by languages like Python or Rust to call C code.</p>
+</blockquote>
+<h3 id="code">Code</h3>
+<p>Here&rsquo;s the Rust code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// hello.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[no_mangle]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">extern</span> <span style="color:#e6db74">&#34;C&#34;</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">hello</span>() {
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;Hello from Rust!&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>And here&rsquo;s some C code that calls the <code>hello</code> Rust function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// main.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hello</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">hello</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The code is trivial, but a couple of things warrant explanation.</p>
+<h3 id="preventing-name-mangling">Preventing Name Mangling</h3>
+<p>By default, the Rust compiler mangles the names of the symbols in the generated object files (I believe it does so to satisfy the linker, which requires that all symbol names be globally unique). This is fine when the rust compiler is solely responsible for building all of your code since it can keep track of the mangled names, but is a problem for us since we wish to call a Rust function from C or assembly so we&rsquo;d like to know in advance what the name of the function in the generated object file will be. The <code>#[no_mangle]</code> compiler directive asks the compiler to not mangle the name of the function after it, thus letting us refer to the function as <code>hello</code> in C or assembly. You can see the difference using the <code>nm</code> tool.</p>
+<p>The <code>nm</code> tool lists the symbols in an object file, and you can use that to see the difference in action. When run with the <code>#[no_mangle]</code> directive, here is what our <code>hello</code> function is like (see the third entry):</p>
+<pre tabindex="0"><code>❯ nm 2&gt;/dev/null libhello.a| grep hello
+hello.hello.a04ca2dc-cgu.0.rcgu.o:
+hello.hello.a04ca2dc-cgu.1.rcgu.o:
+0000000000000000 T hello
+hello.3wtkpwhk4eo6pr7y.rcgu.o:
+</code></pre><p>If you remove the <code>extern &quot;C&quot;</code> directive and compile the code again, you no longer see a symbol associated with <code>hello</code> (the 2 things in the output are names of object files present inside the ar archive that represents this static lib):</p>
+<pre tabindex="0"><code>❯ nm 2&gt;/dev/null libhello.a| grep hello
+hello.hello.a04ca2dc-cgu.0.rcgu.o:
+hello.3wtkpwhk4eo6pr7y.rcgu.o:
+</code></pre><h3 id="specifying-the-calling-convention">Specifying The Calling Convention</h3>
+<p>The <code>extern &quot;C&quot;</code> directive is less trivial. It has to do with the fact that the Rust does not have a defined calling convention, so any C or assembly code that links with it does not know where the Rust function expects to see it&rsquo;s arguments or store the return value. However, using the <code>extern &quot;C&quot;</code> directive instructs the compiler to use the C calling convention instead of the default (and undefined) rust calling convention, which allows C code to call it.</p>
+<blockquote>
+<p>The calling convention is a contract between functions about how arguments and return values are passed between them. These are very low level implementation details - which CPU registers or what offsets on the stack frame are used to store arguments, etc. The calling convention will depend on both the processor architecture and compiler since the former determines what registers are available, and the latter decides how to use them. The calling convention is undefined for the Rust compiler (i.e. it is an implementation detail that can change without notice), but fortunately for us, the C calling convention for x86 is defined. Find some of the gory details <a href="https://en.wikipedia.org/wiki/X86_calling_conventions#List_of_x86_calling_conventions">here</a>.</p>
+</blockquote>
+<p>The astute reader will notice that the Rust function in question (i.e. <code>hello</code>) does not take any arguments, and thus posit that the calling convention shouldn&rsquo;t matter in this context. And said reader would be correct! If you remove the <code>extern &quot;C&quot;</code> directive from the Rust code and follow the above steps, things still work. However, I wouldn&rsquo;t ever advise omitting the <code>extern &quot;C&quot;</code> directive even for functions that don&rsquo;t take arguments or return things, at least for consistency and to clearly indicate the potential use of FFI here.</p>
+<h3 id="baking-an-executable">Baking An Executable</h3>
+<p>Now let&rsquo;s compile these two into a single executable. You&rsquo;re likely familiar with using <code>gcc</code> or <code>rustc</code> (or <code>cargo</code> which calls <code>rustc</code> under the hood) to compile your source code directly into an executable binary, but there are actually many stages in the compilation process. Since we&rsquo;re doing something non-trivial by mixing in two languages with different compilers, we&rsquo;ll have to work through some of these stages manually.</p>
+<p>The trick is to compile each of the parts into object files, and then link them all together using the linker. This is what compilers do internally as well.</p>
+<blockquote>
+<p>I had some trouble with getting a single object file to work on the Rust side, so I compiled it into a static library instead. A static library is just an ar archive that contains a bunch of object files. You can take it apart using <code>ar x libhello.a</code> if you&rsquo;re curious. The C code is compiled into a usual object file.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Compiles hello.rs into a static lib called libhello.a</span>
+</span></span><span style="display:flex;"><span>rustc --crate-type staticlib hello.rs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The -c flag tells gcc to generate an object file instead of an executable</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># The resulting object file is called main.o</span>
+</span></span><span style="display:flex;"><span>gcc -c main.c
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Link the object file and static lib into an executable</span>
+</span></span><span style="display:flex;"><span>gcc -o main main.o libhello.a
+</span></span></code></pre></div><blockquote>
+<p>The order of arguments to gcc in the last command matters! Here&rsquo;s what happens if you switch main.o and libhello.a:</p>
+<pre tabindex="0"><code>gcc -o main libhello.a main.o
+/usr/bin/ld: main.o: in function `main&#39;:
+main.c:(.text+0xa): undefined reference to `hello&#39;
+collect2: error: ld returned 1 exit status
+</code></pre><p>The error comes from gcc which calls ld (the linker) internally. The arguments to ld must be such that the thing referencing a symbol (in this case <code>main.o</code>, which references our rust function <code>hello</code>) must come before the thing defining it (in this case, the <code>libhello.o</code> static library. See <a href="https://stackoverflow.com/questions/45135/why-does-the-order-in-which-libraries-are-linked-sometimes-cause-errors-in-gcc">this stackoverflow answer</a> for more details.</p>
+</blockquote>
+<p>This results in an executable called <code>main</code> which can be run normally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>❯ ./main 
+</span></span><span style="display:flex;"><span>Hello from Rust!
+</span></span></code></pre></div><h2 id="calling-rust-from-x86-assembler">Calling Rust From x86 Assembler</h2>
+<p>Now that we understand how to call Rust code from C, we can tackle calling it from assembly. We&rsquo;ll only encounter a couple of speedbumps here, the first of which is the blank stare you&rsquo;re about to have if you&rsquo;re not familiar with x86 assembly.</p>
+<p>Without further ado, you may now feast your eyes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#75715e">; main.asm
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">section</span> <span style="color:#66d9ef">.text</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">global</span> <span style="color:#66d9ef">_start</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_start:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">; Declare an external function called hello
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">extern</span> <span style="color:#66d9ef">hello</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">; Call the hello function (i.e. jump to the symbol called hello)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">call</span> <span style="color:#66d9ef">hello</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">; Exit cleanly
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">rbx</span>, <span style="color:#ae81ff">0</span> <span style="color:#75715e">; return code 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">mov</span> <span style="color:#66d9ef">rax</span>, <span style="color:#ae81ff">1</span> <span style="color:#75715e">; syscall 1: SYS_EXIT
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">int</span> <span style="color:#ae81ff">0x80</span> <span style="color:#75715e">; interrupt 0x80 means make syscall
+</span></span></span></code></pre></div><p>That was likely at least a little underwhelming if you generally consider raw assembly an Eldritch horror beyond mortal comprehension. This is exceptionally terse, simple code! Regardless, an explanation is due (skip to the next section if you understand the above snippet).</p>
+<p>The <code>section .text</code> directive tells the assembler that the instructions that follow should be placed in the <code>.text</code> section of the compiled executable. It starts by declaring the <code>_start</code> symbol, which is a convention for where code execution must start. We then inform the assembler of an external function called <code>hello</code> via the <code>extern hello</code> directive (this is no different from the <code>extern</code> directive in our C code from the previous section). Finally, we call the <code>hello</code> function.</p>
+<p>The last three lines are likely the most cryptic here. This is how we cleanly exit a program in x86 assembly. We&rsquo;re invoking the exit syscall on Linux with the argument 0, which tells the OS that this program exited cleanly. If you care about the hairy details, here they are: we place the syscall number (in this case, 1, which corresponds to the exit syscall on Linux) in the <code>rax</code> register, the argument to the syscall (in this case, 0, which indicates success) in <code>rbx</code>, and finally raise interrupt number 0x80, which transfers control to the kernel asking it to execute the syscall.</p>
+<blockquote>
+<p>Terrible things will come to pass if you don&rsquo;t do the dance required to correctly exit from the program! In the absence of the exit syscall, the kernel will attempt to continue executing instructions from the memory after the last instruction (in this case, <code>call hello</code>) has completed. Since the memory likely contains garbage instead of coherent instructions (likely in non-executable memory regions), the kernel will barf out a segfault!</p>
+</blockquote>
+<h3 id="baking-another-executable">Baking Another Executable</h3>
+<p>We&rsquo;ll be using nasm (netwide assembler) to transform our handrolled assembly into an object file. We can then try to link the object file with <code>libhello.a</code> like we did before.</p>
+<p>Compile assembler with confidence:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Compiles hello.rs into a static lib called libhello.a</span>
+</span></span><span style="display:flex;"><span>rustc --crate-type staticlib hello.rs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Compile the assembly program into an object file</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># We tell nasm that our object file should be a 64 bit ELF binary</span>
+</span></span><span style="display:flex;"><span>nasm -f elf64 main.asm
+</span></span></code></pre></div><blockquote>
+<p>The -f elf64 flag tells nasm that we want an object file in the ELF format. ELF stands for Executable and Linkable Format and is a standard format for executables and object files on Linux.</p>
+</blockquote>
+<p>And then watch the whole thing blow up:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>❯ gcc -o main main.o libhello.a
+</span></span><span style="display:flex;"><span>/usr/bin/ld: main.o: in <span style="color:#66d9ef">function</span> <span style="color:#e6db74">`</span>_start<span style="color:#e6db74">&#39;:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">main.asm:(.text+0x0): multiple definition of `_start&#39;</span>; /usr/lib/gcc/x86_64-redhat-linux/13/../../../../lib64/crt1.o:<span style="color:#f92672">(</span>.text+0x0<span style="color:#f92672">)</span>: first defined here
+</span></span><span style="display:flex;"><span>/usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/13/../../../../lib64/crt1.o: in <span style="color:#66d9ef">function</span> <span style="color:#e6db74">`</span>_start<span style="color:#e6db74">&#39;:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">(.text+0x1b): undefined reference to `main&#39;</span>
+</span></span><span style="display:flex;"><span>collect2: error: ld returned <span style="color:#ae81ff">1</span> exit status
+</span></span></code></pre></div><p>That&rsquo;s surprising. Multiple definitions of <code>_start</code>? We only have one definition in our assembly code. And then there&rsquo;s an undefined reference to <code>main</code> even though we never reference anything called <code>main</code> anywhere.</p>
+<h3 id="how-main-works">How <code>main</code> Works</h3>
+<p>Resolving this error is easy, but requires understanding how a usual compiled executable works. We&rsquo;re used to our programs executing the main function as the entrypoint, but that is not where the execution actually starts. Execution starts from a special symbol called <code>_start</code>. That is why we defined exactly this symbol in our assembly code.</p>
+<blockquote>
+<p>If you define a start symbol with any label other than <code>_start</code>, your code will compile. The linker will throw a benign looking warning. And then it will blow up in miserable ways (spoiler: segfault).</p>
+</blockquote>
+<p>But consider what happens when you compile a normal C program. You define a <code>main</code> function that does what you want it to do, but where&rsquo;s the <code>_start</code> function, and what does that do? You&rsquo;ll likely guess that <code>_start</code> in a normal C program does some initialization work and then calls <code>main</code>, which is a good guess. A hint about where the <code>_start</code> function for normal C programs is defined lies in the error log above. It says that the <code>_start</code> function was first defined in an object file called <code>crt1.o</code>. This file obviously doesn&rsquo;t come from our code. It refers to the C runtime, which defines a <code>_start</code> function that eventually calls a function called <code>main</code>. This is why the entrypoint of a C program must always be named <code>main</code>. This then explains our second error, the one about an undefined reference to <code>main</code>. We never defined a main function anywhere, so naturally this symbol is undefined. As you might&rsquo;ve guessed, the C runtime is linked against by default when baking executables with gcc. This makes perfect sense for vanilla C programs that define a main and rely on the C runtime to set things up for them, but trips us up when we try to take the reins and write code that is designed to be the very first thing that executes.</p>
+<p>The fix is trivial - you can ask gcc to not link to the C runtime by supplying the <code>-nostartfiles</code> argument.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -o main main.o libhello.a -nostartfiles
+</span></span></code></pre></div><p>Having done that, we finally have a binary called main that, when executed, calls a Rust library function! \o/</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>❯ ./main 
+</span></span><span style="display:flex;"><span>Hello from Rust!
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>I still don&rsquo;t know what might be a good use case for calling a Rust library function from assembly. But getting this trivial example to work taught me a lot of the nitty-gritty details of compiler toolchains and what makes an executable run. So I hope the learning outcomes of this post were worth it.</p>
+<h2 id="toolchain-details">Toolchain Details</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ rustc --version
+</span></span><span style="display:flex;"><span>rustc 1.76.0 <span style="color:#f92672">(</span>07dca489a 2024-02-04<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ gcc -v
+</span></span><span style="display:flex;"><span>Using built-in specs.
+</span></span><span style="display:flex;"><span>COLLECT_GCC<span style="color:#f92672">=</span>gcc
+</span></span><span style="display:flex;"><span>COLLECT_LTO_WRAPPER<span style="color:#f92672">=</span>/usr/libexec/gcc/x86_64-redhat-linux/13/lto-wrapper
+</span></span><span style="display:flex;"><span>OFFLOAD_TARGET_NAMES<span style="color:#f92672">=</span>nvptx-none
+</span></span><span style="display:flex;"><span>OFFLOAD_TARGET_DEFAULT<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Target: x86_64-redhat-linux
+</span></span><span style="display:flex;"><span>Configured with: ../configure --enable-bootstrap --enable-languages<span style="color:#f92672">=</span>c,c++,fortran,objc,obj-c++,ada,go,d,m2,lto --prefix<span style="color:#f92672">=</span>/usr --mandir<span style="color:#f92672">=</span>/usr/share/man --infodir<span style="color:#f92672">=</span>/usr/share/info --with-bugurl<span style="color:#f92672">=</span>http://bugzilla.redhat.com/bugzilla --enable-shared --enable-threads<span style="color:#f92672">=</span>posix --enable-checking<span style="color:#f92672">=</span>release --enable-multilib --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions --enable-gnu-unique-object --enable-linker-build-id --with-gcc-major-version-only --enable-libstdcxx-backtrace --with-libstdcxx-zoneinfo<span style="color:#f92672">=</span>/usr/share/zoneinfo --with-linker-hash-style<span style="color:#f92672">=</span>gnu --enable-plugin --enable-initfini-array --with-isl<span style="color:#f92672">=</span>/builddir/build/BUILD/gcc-13.2.1-20231205/obj-x86_64-redhat-linux/isl-install --enable-offload-targets<span style="color:#f92672">=</span>nvptx-none --without-cuda-driver --enable-offload-defaulted --enable-gnu-indirect-function --enable-cet --with-tune<span style="color:#f92672">=</span>generic --with-arch_32<span style="color:#f92672">=</span>i686 --build<span style="color:#f92672">=</span>x86_64-redhat-linux --with-build-config<span style="color:#f92672">=</span>bootstrap-lto --enable-link-serialization<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>Thread model: posix
+</span></span><span style="display:flex;"><span>Supported LTO compression algorithms: zlib zstd
+</span></span><span style="display:flex;"><span>gcc version 13.2.1 <span style="color:#ae81ff">20231205</span> <span style="color:#f92672">(</span>Red Hat 13.2.1-6<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>GCC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ ld -v
+</span></span><span style="display:flex;"><span>GNU ld version 2.40-13.fc39
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ nasm -v
+</span></span><span style="display:flex;"><span>NASM version 2.16.01 compiled on Jul <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">2023</span>
+</span></span></code></pre></div>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/rust">#rust</a>
+        
+            <a class="tag" href="/tags/assembly">#assembly</a>
+        
+            <a class="tag" href="/tags/misc">#misc</a>
+        
+            <a class="tag" href="/tags/programming-languages">#programming-languages</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="mailto:ajmalsiddiqui21@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/_ajmalsiddiqui" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://linkedin.com/in/ajmal-siddiqui" target="_blank" rel="noopener" title="LinkedIn">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,3.654102 C2,2.69908141 2.79442509,1.92397846 3.77383592,1.92397846 L24.2261641,1.92397846 C25.2058917,1.92397846 26,2.69908141 26,3.654102 L26,24.3462148 C26,25.3015521 25.2058917,26.0760215 24.2261641,26.0760215 L3.77383592,26.0760215 C2.79442509,26.0760215 2,25.3015521 2,24.3465315 L2,3.65378524 L2,3.654102 Z M9.27526132,22.1415901 L9.27526132,11.2356668 L5.65030092,11.2356668 L5.65030092,22.1415901 L9.27557808,22.1415901 L9.27526132,22.1415901 Z M7.46341463,9.74691162 C8.72727273,9.74691162 9.51409566,8.90940767 9.51409566,7.86284447 C9.49033893,6.79252455 8.72727273,5.97846056 7.48748812,5.97846056 C6.24675325,5.97846056 5.43649034,6.79252455 5.43649034,7.86284447 C5.43649034,8.90940767 6.22299652,9.74691162 7.4396579,9.74691162 L7.46309788,9.74691162 L7.46341463,9.74691162 Z M11.2815965,22.1415901 L14.9062401,22.1415901 L14.9062401,16.0519481 C14.9062401,15.7263225 14.9299968,15.4000634 15.0256573,15.1675641 C15.2876148,14.5159962 15.8840672,13.8416218 16.8856509,13.8416218 C18.1970225,13.8416218 18.7218879,14.8416218 18.7218879,16.3078872 L18.7218879,22.1415901 L22.3465315,22.1415901 L22.3465315,15.8885017 C22.3465315,12.5388027 20.5584416,10.9800443 18.1735825,10.9800443 C16.2182452,10.9800443 15.3595185,12.072854 14.8824834,12.8172315 L14.9065569,12.8172315 L14.9065569,11.2359835 L11.2819132,11.2359835 C11.3291099,12.2591067 11.2815965,22.1419069 11.2815965,22.1419069 L11.2815965,22.1415901 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+    <a class="social-icon" href="https://medium.com/@ajmalsiddiqui21" target="_blank" rel="noopener" title="Medium">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M2,2 L26,2 L26,26 L2,26 L2,2 Z M7.72727142,10.0265545 L7.72727142,17.1527156 C7.77112416,17.4097828 7.69008764,17.6723786 7.50898513,17.8600642 L5.81538462,19.9143852 L5.81538462,20.1852847 L10.617683,20.1852847 L10.617683,19.9143852 L8.92408245,17.8600642 C8.74165168,17.6726892 8.65559727,17.4118239 8.69074193,17.1527156 L8.69074193,10.9897526 L12.9059255,20.1852847 L13.3951878,20.1852847 L17.0157294,10.9897526 L17.0157294,18.3190884 C17.0157294,18.514738 17.0157294,18.5523628 16.8877685,18.6802876 L15.5855778,19.9444852 L15.5855778,20.2153846 L21.9083531,20.2153846 L21.9083531,19.9444852 L20.6513252,18.7103876 C20.5403599,18.6258033 20.4853154,18.4867833 20.50831,18.3491883 L20.50831,9.28158097 C20.4853154,9.14398599 20.5403599,9.00496587 20.6513252,8.92038167 L21.9384615,7.68628409 L21.9384615,7.41538462 L17.4824105,7.41538462 L14.3059685,15.3391941 L10.6929541,7.41538462 L6.01861668,7.41538462 L6.01861668,7.68628409 L7.52403936,9.49980554 C7.67182769,9.63301305 7.74730311,9.82863473 7.72727142,10.0265545 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/ajmalsiddiqui" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+        <p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+        <p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js" integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin="anonymous"></script>
+</footer>
+
+    </body>
+</html>

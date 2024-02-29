@@ -3,10 +3,40 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ajmalsiddiqui.me/</loc>
-    <lastmod>2022-07-17T13:00:05+05:30</lastmod>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/tags/assembly/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/categories/assembly/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/blog/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/blog/calling-rust-from-c-and-x86-assembly/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
   </url><url>
     <loc>https://ajmalsiddiqui.me/categories/</loc>
-    <lastmod>2022-07-17T13:00:05+05:30</lastmod>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/tags/misc/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/categories/miscellaneous/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/tags/programming-languages/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/tags/rust/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/categories/rust/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
+  </url><url>
+    <loc>https://ajmalsiddiqui.me/tags/</loc>
+    <lastmod>2024-02-28T21:20:50-05:00</lastmod>
   </url><url>
     <loc>https://ajmalsiddiqui.me/categories/ctf-writeups/</loc>
     <lastmod>2022-07-17T13:00:05+05:30</lastmod>
@@ -26,22 +56,7 @@
     <loc>https://ajmalsiddiqui.me/tags/sandbox-escape/</loc>
     <lastmod>2022-07-17T13:00:05+05:30</lastmod>
   </url><url>
-    <loc>https://ajmalsiddiqui.me/tags/</loc>
-    <lastmod>2022-07-17T13:00:05+05:30</lastmod>
-  </url><url>
-    <loc>https://ajmalsiddiqui.me/blog/</loc>
-    <lastmod>2022-02-19T13:54:42+05:30</lastmod>
-  </url><url>
-    <loc>https://ajmalsiddiqui.me/tags/misc/</loc>
-    <lastmod>2022-02-19T13:54:42+05:30</lastmod>
-  </url><url>
-    <loc>https://ajmalsiddiqui.me/categories/miscellaneous/</loc>
-    <lastmod>2022-02-19T13:54:42+05:30</lastmod>
-  </url><url>
     <loc>https://ajmalsiddiqui.me/blog/my-2021-in-tech/</loc>
-    <lastmod>2022-02-19T13:54:42+05:30</lastmod>
-  </url><url>
-    <loc>https://ajmalsiddiqui.me/tags/programming-languages/</loc>
     <lastmod>2022-02-19T13:54:42+05:30</lastmod>
   </url><url>
     <loc>https://ajmalsiddiqui.me/tags/lisp/</loc>
